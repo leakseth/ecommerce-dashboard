@@ -1,0 +1,365 @@
+    body {
+      background-color: #f8f9fa;
+      overflow-x: hidden;
+    }
+    .sidebar {
+      background-color: #fafafa;
+      height: 100vh;
+      overflow-y: auto;
+      box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+                  rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+    }
+    .nav-link:hover {
+      background-color: #e9ecef;
+      border-radius: 0.375rem;
+    }
+    .nav-link.active {
+      background-color: #1f1f1f;
+      color: #fff !important;
+      border-radius: 0.375rem;
+    }
+    .topbar {
+      position: fixed;
+      top: 0;
+      left: 16.666%;
+      width: 83.334%;
+      background-color: white;
+      border-bottom: 1px solid #ccc;
+      padding: 12px 25px;
+      z-index: 1000;
+    }
+    footer {
+      border-top: 1px solid #ccc;
+      padding: 10px 15px;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 16.666%;
+      background-color: #fafafa;
+      text-align: center;
+      font-size: 0.85rem;
+    }
+    .main-content {
+      margin-left: 16.666%;
+      padding: 100px 30px 30px 30px;
+    }
+
+    /* product */
+    .table > tbody > tr:hover {
+    background-color: #f8f9fa;
+    transition: background 0.3s ease;
+    }
+
+    .btn-outline-dark:hover,
+    .btn-outline-danger:hover {
+    transform: scale(1.1);
+    transition: transform 0.2s;
+    }
+
+    .badge {
+    padding: 8px 12px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    }
+
+    .modal-content {
+    border-radius: 20px;
+    }
+    .btn-dark {
+    border-radius: 20px;
+    }
+
+    /* modal delete */
+ #deleteProductModal .modal-content {
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  }
+
+  #deleteProductModal .modal-title {
+    font-weight: 600;
+    color: #d9534f; /* Bootstrap danger color */
+  }
+
+  #deleteProductModal .modal-body p {
+    font-size: 1rem;
+  }
+
+  #deleteProductModal .btn-danger {
+    min-width: 100px;
+  } 
+
+   /* users */
+  /* General Styling */
+body {
+    background-color: #f8f9fa; /* Light gray background */
+}
+
+/* Header Styling */
+.header-text {
+    font-size: 2.25rem;
+}
+.subheader-text {
+    font-size: 1rem;
+    margin-top: -5px;
+}
+.add-user-btn {
+    border-radius: 6px;
+    padding: 8px 15px;
+    font-weight: 600;
+}
+
+/* User Card Styling */
+.user-card {
+    border-radius: 10px;
+}
+
+/* Initials Circle */
+.initials-circle {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    background-color: #e9ecef; /* Very light gray */
+    color: #343a40; /* Dark text for contrast */
+}
+
+/* Role Badges */
+.role-badge {
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1; /* Ensure badge height is compact */
+}
+
+/* Manager Role Style (Dark) */
+.role-manager {
+    background-color: #343a40;
+    color: white;
+}
+
+/* User Role Style (Light/Gray) */
+.role-user {
+    background-color: #e9ecef;
+    color: #343a40;
+}
+
+/* Status Badges */
+.status-badge {
+    padding: 4px 10px;
+    border-radius: 15px; /* Pill shape */
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+/* Active Status (Dark/Black) */
+.status-active {
+    background-color: #000;
+    color: white;
+}
+
+/* Inactive Status (Gray/White text) */
+.status-inactive {
+    background-color: #6c757d;
+    color: white;
+}
+
+/* Contact Info Styling */
+.icon-size {
+    font-size: 1rem;
+}
+.contact-text {
+    font-size: 0.9rem;
+    color: #212529; /* Darker text */
+}
+
+/* Three dots button */
+.dropdown button {
+    color: #6c757d !important; /* Muted gray color */
+}
+
+/* setting */
+
+/* General Layout and Text Styling */
+body {
+    background-color: #f7f7f7; /* Very light background */
+}
+
+.settings-header-text {
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+.settings-subheader-text {
+    font-size: 1rem;
+    color: #6c757d;
+}
+
+/* Card Styling */
+.settings-card {
+    border-radius: 12px;
+    /* Using a subtle shadow as seen in the UI */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.05); 
+}
+
+.card-title-dark {
+    font-size: 1.25rem;
+    margin-bottom: 0.25rem;
+    color: #333;
+}
+
+.card-subtitle-small {
+    font-size: 0.9rem;
+}
+
+
+/* Form Element Styling */
+.form-label-custom {
+    /* Labels are less prominent and slightly smaller than default Bootstrap */
+    font-size: 0.9rem; 
+    font-weight: 500;
+    color: #333;
+}
+
+.form-control-custom {
+    border-radius: 6px;
+    padding: 10px 12px;
+    height: auto; /* Allow padding to define height */
+    border: 1px solid #ced4da;
+    
+    /* Ensure no distracting focus outline */
+    box-shadow: none; 
+}
+
+.form-control-custom:focus {
+    border-color: #333; /* Darker border on focus */
+    box-shadow: 0 0 0 0.05rem rgba(0, 0, 0, 0.1);
+}
+
+/* Button Styling */
+.btn-custom-dark {
+    background-color: #000;
+    color: white;
+    border: 1px solid #000;
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-weight: 600;
+    transition: background-color 0.2s;
+}
+
+.btn-custom-dark:hover {
+    background-color: #333;
+    border-color: #333;
+    color: white;
+}
+
+
+/*  button logout */
+
+/* --- Professional Logout Button Toggle Style --- */
+
+.logout-toggle-btn {
+    /* Set initial appearance based on the icon only */
+    padding: 0.5rem 0.6rem !important; /* Fixed padding for a perfect circle/square base */
+    width: auto; /* Let content define width */
+    
+    /* Ensure height is fixed and transition is smooth */
+    height: 32px; /* Set a fixed height matching the btn-sm size */
+    transition: all 0.3s ease-in-out; 
+    
+    /* Center text/icon */
+    display: inline-flex;
+    align-items: center;
+}
+
+.logout-toggle-btn .bi {
+    /* Ensures the icon remains the primary element */
+    margin-right: 0;
+}
+
+.logout-toggle-btn .logout-text {
+    /* Initial state: Hidden (Zero width, zero opacity) */
+    max-width: 0; 
+    opacity: 0;
+    transition: max-width 0.3s ease-in-out, margin-left 0.3s ease-in-out, opacity 0.2s;
+    white-space: nowrap; /* Prevents text wrap */
+    padding: 0;
+}
+
+/* Hover State: Expanded Button */
+.logout-toggle-btn:hover {
+    /* Increase padding on the right to accommodate text */
+    padding-right: 1.0rem !important;
+}
+
+/* Hover State: Visible Text */
+.logout-toggle-btn:hover .logout-text {
+    /* Transition text into view */
+    max-width: 100px; /* Gives the text enough space to slide out */
+    opacity: 1;
+    margin-left: 8px; /* Adds space between icon and word */
+    padding: 0;
+}
+
+
+/* ====================================
+   DASHBOARD SPECIFIC STYLING
+   ==================================== */
+
+/* General Card Styling */
+.dashboard-metric-card {
+    border-radius: 10px;
+}
+
+.dashboard-card-title {
+    font-size: 0.85rem;
+    color: #6c757d !important;
+}
+
+.dashboard-card-value {
+    font-size: 1.8rem;
+}
+
+/* Icon Background Circle */
+.dashboard-icon-circle {
+    /* Slight adjustment for a cleaner look */
+    background-color: #f8f9fa !important; 
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Recent Lists (Top Selling Products) */
+.recent-list .list-group-item {
+    border-left: 0;
+    border-right: 0;
+    /* Clean up default list group styling */
+    padding: 1rem 0; 
+}
+.recent-list .list-group-item:last-child {
+    border-bottom: 0;
+}
+.recent-list .list-group-item:first-child {
+    border-top: 0;
+}
+
+/* Recent Orders Table */
+.recent-orders-table th {
+    font-weight: 600;
+    color: #495057;
+    border-bottom-width: 2px; /* Thicker border for header separation */
+}
+
+/* Chart Placeholder */
+.chart-placeholder {
+    height: 100%; 
+    min-height: 250px;
+    border-radius: 8px;
+    border: dashed 1px #dee2e6 !important;
+}
