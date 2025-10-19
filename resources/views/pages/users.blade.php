@@ -14,287 +14,306 @@
         </header>
 
         <div class="row g-4">
+            @foreach ($users as $user)
+                <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+                    <div class="card user-card h-100 border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div class="initials-circle bg-light text-dark fw-bold">
+                                    {{ strtoupper(substr($user->name, 0, 2)) }}
+                                </div>
+                                <div class="dropdown">
+                                    <button class="btn btn-sm text-muted p-0" type="button" data-bs-toggle="dropdown">
+                                        <i class="bi bi-three-dots-vertical"></i>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <!-- Edit Button -->
+                                            <button 
+                                                type="button" 
+                                                class="dropdown-item custom-dropdown-item text-primary"
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#editUserModal"
+                                                data-id="{{ $user->id }}"
+                                                data-name="{{ $user->name }}"
+                                                data-email="{{ $user->email }}"
+                                                data-phone="{{ $user->phone }}"
+                                                data-role="{{ $user->role }}"
+                                            >
+                                                Edit
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <!-- Delete Button triggers modal -->
+                                            <button 
+                                                type="button" 
+                                                class="dropdown-item custom-dropdown-item text-danger"
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#deleteUserModal"
+                                                data-id="{{ $user->id }}"
+                                                data-name="{{ $user->name }}"
+                                            >
+                                                Delete
+                                            </button>
+                                        </li>
+                                    </ul>
 
-            <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
-                <div class="card user-card h-100 border-0 shadow-sm">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-start mb-3">
-                            <div class="initials-circle bg-light text-dark fw-bold">JS</div>
-                            <div class="dropdown">
-                                <button class="btn btn-sm text-muted p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="bi bi-three-dots-vertical"></i>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a 
-                                            class="dropdown-item" 
-                                            href="#" 
-                                            data-bs-toggle="modal" 
-                                            data-bs-target="#editUserModal"
-                                            data-user-id="1"         data-user-name="Jane Smith"
-                                            onclick="loadUserData(this)" >
-                                            Edit
-                                        </a>
-                                    </li>
-                                    <li><a data-bs-target="#deleteUserModal" data-bs-toggle="modal" class="dropdown-item text-danger" href="#">Delete</a></li>
-                                </ul>
+
+                                </div>
+                            </div>
+
+                            <h5 class="card-title fw-bold">{{ $user->name }}</h5>
+                            <span class="badge role-badge role-{{ $user->role == 1 ? 'manager' : 'user' }}">
+                                {{ $user->role == 1 ? 'Admin' : 'User' }}
+                            </span>
+                            <div class="contact-info mb-2">
+                                <i class="fas fa-envelope me-2 text-muted icon-size"></i>
+                                <a href="mailto:{{ $user->email }}" class="text-decoration-none contact-text">{{ $user->email }}</a>
+                            </div>
+                            <div class="contact-info mb-3">
+                                <i class="fas fa-phone me-2 text-muted icon-size"></i>
+                                <span class="contact-text">{{ $user->phone }}</span>
                             </div>
                         </div>
-
-                        <h5 class="card-title fw-bold">Jane Smith</h5>
-                        <span class="badge role-badge role-manager mb-3">Manager</span>
-
-                        <div class="contact-info mb-2">
-                            <i class="fas fa-envelope me-2 text-muted icon-size"></i>
-                            <a href="mailto:jane@example.com" class="text-decoration-none contact-text">jane@example.com</a>
-                        </div>
-                        <div class="contact-info mb-3">
-                            <i class="fas fa-phone me-2 text-muted icon-size"></i>
-                            <span class="contact-text">+1 234 567 8901</span>
-                        </div>
-
-                        <span class="badge status-badge status-active">Active</span>
                     </div>
                 </div>
-            </div>
-            
-            <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
-                <div class="card user-card h-100 border-0 shadow-sm">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-start mb-3">
-                            <div class="initials-circle bg-light text-dark fw-bold">BJ</div>
-                            <div class="dropdown">
-                                <button class="btn btn-sm text-muted p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="bi bi-three-dots-vertical"></i>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a 
-                                            class="dropdown-item" 
-                                            href="#" 
-                                            data-bs-toggle="modal" 
-                                            data-bs-target="#editUserModal"
-                                            data-user-id="1"         data-user-name="Jane Smith"
-                                            onclick="loadUserData(this)" >
-                                            Edit
-                                        </a>
-                                    </li>
-                                    <li><a data-bs-target="#deleteUserModal" data-bs-toggle="modal" class="dropdown-item text-danger" href="#">Delete</a></li>
-                                </ul>
-                            </div>
-                        </div>
+            @endforeach
 
-                        <h5 class="card-title fw-bold">Bob Johnson</h5>
-                        <span class="badge role-badge role-user mb-3">User</span>
 
-                        <div class="contact-info mb-2">
-                            <i class="fas fa-envelope me-2 text-muted icon-size"></i>
-                            <a href="mailto:bob@example.com" class="text-decoration-none contact-text">bob@example.com</a>
-                        </div>
-                        <div class="contact-info mb-3">
-                            <i class="fas fa-phone me-2 text-muted icon-size"></i>
-                            <span class="contact-text">+1 234 567 8902</span>
-                        </div>
-
-                        <span class="badge status-badge status-active">Active</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
-                <div class="card user-card h-100 border-0 shadow-sm">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-start mb-3">
-                            <div class="initials-circle bg-light text-dark fw-bold">AB</div>
-                            <div class="dropdown">
-                                <button class="btn btn-sm text-muted p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="bi bi-three-dots-vertical"></i>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a 
-                                            class="dropdown-item" 
-                                            href="#" 
-                                            data-bs-toggle="modal" 
-                                            data-bs-target="#editUserModal"
-                                            data-user-id="1"         data-user-name="Jane Smith"
-                                            onclick="loadUserData(this)" >
-                                            Edit
-                                        </a>
-                                    </li>
-                                    <li><a data-bs-target="#deleteUserModal" data-bs-toggle="modal" class="dropdown-item text-danger" href="#">Delete</a></li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <h5 class="card-title fw-bold">Alice Brown</h5>
-                        <span class="badge role-badge role-user mb-3">User</span>
-
-                        <div class="contact-info mb-2">
-                            <i class="fas fa-envelope me-2 text-muted icon-size"></i>
-                            <a href="mailto:alice@example.com" class="text-decoration-none contact-text">alice@example.com</a>
-                        </div>
-                        <div class="contact-info mb-3">
-                            <i class="fas fa-phone me-2 text-muted icon-size"></i>
-                            <span class="contact-text">+1 234 567 8903</span>
-                        </div>
-
-                        <span class="badge status-badge status-inactive">Inactive</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
-                <div class="card user-card h-100 border-0 shadow-sm">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-start mb-3">
-                            <div class="initials-circle bg-light text-dark fw-bold">CW</div>
-                            <div class="dropdown">
-                                <button class="btn btn-sm text-muted p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="bi bi-three-dots-vertical"></i>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a 
-                                            class="dropdown-item" 
-                                            href="#" 
-                                            data-bs-toggle="modal" 
-                                            data-bs-target="#editUserModal"
-                                            data-user-id="1"         data-user-name="Jane Smith"
-                                            onclick="loadUserData(this)" >
-                                            Edit
-                                        </a>
-                                    </li>
-                                    <li><a data-bs-target="#deleteUserModal" data-bs-toggle="modal" class="dropdown-item text-danger" href="#">Delete</a></li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <h5 class="card-title fw-bold">Charlie Wilson</h5>
-                        <span class="badge role-badge role-manager mb-3">Manager</span>
-
-                        <div class="contact-info mb-2">
-                            <i class="fas fa-envelope me-2 text-muted icon-size"></i>
-                            <a href="mailto:charlie@example.com" class="text-decoration-none contact-text">charlie@example.com</a>
-                        </div>
-                        <div class="contact-info mb-3">
-                            <i class="fas fa-phone me-2 text-muted icon-size"></i>
-                            <span class="contact-text">+1 234 567 8904</span>
-                        </div>
-
-                        <span class="badge status-badge status-active">Active</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- edit -->
-             <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+            <!-- Add User Modal -->
+            <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content custom-modal-content">
+                    <div class="modal-content custom-modal-content p-3">
                         <div class="modal-header border-0 pb-0">
-                            <h3 class="modal-title fw-bold" id="addUserModalLabel">Add User</h3>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <h5 class="modal-title fw-bold" id="addUserModalLabel">Add New User</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
-                        
-                        <div class="modal-body pt-2">
-                            <form id="addUserForm">
-                                
+
+                        <form id="addUserForm" action="{{ route('user.store') }}" method="POST">
+                            @csrf
+                            <div class="modal-body pt-2">
                                 <div class="mb-3">
-                                    <label for="fullName" class="form-label fw-bold">Full Name</label>
-                                    <input type="text" class="form-control custom-form-control" id="fullName" value="">
+                                    <label class="form-label fw-bold">Full Name</label>
+                                    <input type="text" name="name" class="form-control custom-form-control" required>
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="email" class="form-label fw-bold">Email</label>
-                                    <input type="email" class="form-control custom-form-control" id="email" value="">
+                                    <label class="form-label fw-bold">Email</label>
+                                    <input type="email" name="email" class="form-control custom-form-control" required>
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="phone" class="form-label fw-bold">Phone</label>
-                                    <input type="tel" class="form-control custom-form-control" id="phone" value="">
+                                    <label class="form-label fw-bold">Phone</label>
+                                    <input type="text" name="phone" class="form-control custom-form-control" required>
                                 </div>
-                                
-                                <div class="mb-4">
-                                    <label for="role" class="form-label fw-bold">Role</label>
-                                    <select class="form-select custom-form-control" id="role">
-                                        <option value="manager" selected>Manager</option>
-                                        <option value="user">User</option>
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Password</label>
+                                    <input type="password" name="password" class="form-control custom-form-control" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Role</label>
+                                    <select name="role" class="form-select custom-form-control" required>
+                                        <option value="1">Admin</option>
+                                        <option value="0">User</option>
                                     </select>
                                 </div>
+                            </div>
 
-                                <div class="d-flex justify-content-end pt-3">
-                                    <button type="button" class="btn btn-light me-3 custom-cancel-btn" data-bs-dismiss="modal">Cancel</button>
-                                    <button type="submit" class="btn btn-dark custom-save-btn rounded-2">Save Changes</button>
-                                </div>
-                            </form>
-                        </div>
+                            <div class="modal-footer border-0 pt-3">
+                                <button type="button" class="btn btn-light custom-cancel-btn" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-dark custom-save-btn">Save User</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
+
 
             <!-- edit -->
-             <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
+            <!-- Edit User Modal -->
+            <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content custom-modal-content">
+                    <div class="modal-content custom-modal-content p-3">
                         <div class="modal-header border-0 pb-0">
-                            <h3 class="modal-title fw-bold" id="editUserModalLabel">Edit User</h3>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <h5 class="modal-title fw-bold" id="editUserModalLabel">Edit User</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
-                        
-                        <div class="modal-body pt-2">
-                            <form id="editUserForm">
-                                
+
+                        <form id="editUserForm" method="POST" action="">
+                            @csrf
+                            @method('PUT')
+
+                            <div class="modal-body pt-2">
                                 <div class="mb-3">
-                                    <label for="fullName" class="form-label fw-bold">Full Name</label>
-                                    <input type="text" class="form-control custom-form-control" id="fullName" value="Jane Smith">
+                                    <label class="form-label fw-bold">Full Name</label>
+                                    <input type="text" name="name" class="form-control custom-form-control" id="editName" required>
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="email" class="form-label fw-bold">Email</label>
-                                    <input type="email" class="form-control custom-form-control" id="email" value="jane@example.com">
+                                    <label class="form-label fw-bold">Email</label>
+                                    <input type="email" name="email" class="form-control custom-form-control" id="editEmail" required>
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="phone" class="form-label fw-bold">Phone</label>
-                                    <input type="tel" class="form-control custom-form-control" id="phone" value="+1 234 567 8901">
+                                    <label class="form-label fw-bold">Phone</label>
+                                    <input type="text" name="phone" class="form-control custom-form-control" id="editPhone" required>
                                 </div>
-                                
-                                <div class="mb-4">
-                                    <label for="role" class="form-label fw-bold">Role</label>
-                                    <select class="form-select custom-form-control" id="role">
-                                        <option value="manager" selected>Manager</option>
-                                        <option value="user">User</option>
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Role</label>
+                                    <select name="role" class="form-select custom-form-control" id="editRole" required>
+                                        <option value="1">Admin</option>
+                                        <option value="0">User</option>
                                     </select>
                                 </div>
+                            </div>
 
-                                <div class="d-flex justify-content-end pt-3">
-                                    <button type="button" class="btn btn-light me-3 custom-cancel-btn" data-bs-dismiss="modal">Cancel</button>
-                                    <button type="submit" class="btn btn-dark custom-save-btn rounded-2">Save Changes</button>
-                                </div>
-                            </form>
-                        </div>
+                            <div class="modal-footer border-0 pt-3">
+                                <button type="button" class="btn btn-light custom-cancel-btn" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-dark custom-save-btn">Update User</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
 
-            <!-- Delete Product Modal -->
-            <div class="modal fade" id="deleteUserModal" tabindex="-1" aria-labelledby="deleteUserModal" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content p-3">
-                <div class="modal-header border-0">
-                    <h5 class="modal-title" id="deleteProductLabel">Delete User</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p>Are you sure you want to delete <strong>Wireless Headphones</strong>? This action cannot be undone.</p>
-                </div>
-                <div class="modal-footer border-0">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-danger">Delete</button>
-                </div>
+            <!-- Delete User Modal -->
+            <div class="modal fade" id="deleteUserModal" tabindex="-1" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-md">
+                    <div class="modal-content custom-modal-content p-3">
+                        <div class="modal-header border-0 pb-0">
+                            <h5 class="modal-title fw-bold" id="deleteUserModalLabel">Delete User</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <form id="deleteUserForm" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <div class="modal-body">
+                                <p>Are you sure you want to delete <strong id="deleteUserNameText"></strong>? This action cannot be undone.</p>
+                            </div>
+                            <div class="modal-footer border-0">
+                                <button type="button" class="btn btn-light custom-cancel-btn" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-danger custom-delete-btn">Delete</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
-            </div>
+
+             
 
         </div>
             @endsection
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const editUserModal = document.getElementById('editUserModal');
+    const editUserForm = document.getElementById('editUserForm');
+
+    editUserModal.addEventListener('show.bs.modal', function (event) {
+        const button = event.relatedTarget;
+
+        // ទទួលទិន្នន័យពី data-attributes
+        const id = button.getAttribute('data-id');
+        const name = button.getAttribute('data-name');
+        const email = button.getAttribute('data-email');
+        const phone = button.getAttribute('data-phone');
+        const role = button.getAttribute('data-role');
+
+        // បញ្ចូលទៅក្នុង form fields
+        editUserForm.action = `/admin/users/${id}`; // 🔥 PUT route
+        document.getElementById('editUserId').value = id;
+        document.getElementById('editName').value = name;
+        document.getElementById('editEmail').value = email;
+        document.getElementById('editPhone').value = phone;
+        document.getElementById('editRole').value = role;
+    });
+
+    var deleteUserModal = document.getElementById('deleteUserModal');
+    deleteUserModal.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget; 
+        var userName = button.getAttribute('data-name');
+        var userId = button.getAttribute('data-id');
+
+        var modalName = deleteUserModal.querySelector('#deleteUserNameText');
+        modalName.textContent = userName;
+
+        var form = deleteUserModal.querySelector('#deleteUserForm');
+        form.action = '/admin/users/' + userId; // Update the action dynamically
+    });
+
+});
+</script>
+
+<style>
+   /* ======== MINIMAL CLEAN FORM STYLE (No Shadow, No Underline) ======== */
+
+/* General input and select style */
+.form-control,
+.form-select {
+  box-shadow: none !important;
+  border: 1px solid #ddd !important;
+  border-radius: 8px !important;
+  background-color: #fafafa !important;
+  transition: all 0.3s ease;
+}
+
+/* On focus — slightly darker border and white background */
+.form-control:focus,
+.form-select:focus {
+  border-color: #333 !important;
+  background-color: #fff !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* Label */
+.form-label {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+/* Modal content — no shadow */
+.modal-content {
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 12px !important;
+  background-color: #fff !important;
+}
+
+/* Buttons — flat, clean */
+.btn {
+  box-shadow: none !important;
+  border-radius: 6px !important;
+}
+
+/* Optional subtle hover for input fields */
+.form-control:hover,
+.form-select:hover {
+  border-color: #999 !important;
+}
+
+/* Placeholder color */
+::placeholder {
+  color: #aaa !important;
+  opacity: 0.9;
+}
+
+
+/* Remove default blue active background for dropdown items */
+.dropdown-item:active,
+.dropdown-item:focus {
+    background-color: #f0f0f0 !important; /* light gray or any color you like */
+    color: inherit !important;
+    box-shadow: none !important;
+}
+
+/* Optional: smooth hover effect */
+.dropdown-item:hover {
+    background-color: #e9ecef !important; /* slightly darker on hover */
+    color: inherit !important;
+}
+
+</style>

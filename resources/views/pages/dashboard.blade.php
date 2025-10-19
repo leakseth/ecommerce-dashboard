@@ -12,7 +12,7 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h6 class="fw-semibold text-secondary mb-3 dashboard-card-title">Total Products</h6>
-                    <h3 class="fw-bold mb-0 dashboard-card-value">2,599</h3>
+                    <h3 class="fw-bold mb-0 dashboard-card-value">{{ $totalProducts }}</h3>
                 </div>
                 <div class="bg-light p-3 rounded-circle dashboard-icon-circle">
                     <i class="bi bi-box-seam fs-4 text-primary"></i>
@@ -26,7 +26,7 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h6 class="fw-semibold text-secondary mb-3 dashboard-card-title">Total Users</h6>
-                    <h3 class="fw-bold mb-0 dashboard-card-value">1,245</h3>
+                    <h3 class="fw-bold mb-0 dashboard-card-value">{{ $totalUsers }}</h3>
                 </div>
                 <div class="bg-light p-3 rounded-circle dashboard-icon-circle">
                     <i class="bi bi-people fs-4 text-success"></i>
@@ -40,7 +40,7 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h6 class="fw-semibold text-secondary mb-3 dashboard-card-title">Revenue</h6>
-                    <h3 class="fw-bold mb-0 dashboard-card-value">$25,990</h3>
+                    <h3 class="fw-bold mb-0 dashboard-card-value">${{ number_format($revenue, 2) }}</h3>
                 </div>
                 <div class="bg-light p-3 rounded-circle dashboard-icon-circle">
                     <i class="bi bi-currency-dollar fs-4 text-warning"></i>
@@ -54,7 +54,7 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h6 class="fw-semibold text-secondary mb-3 dashboard-card-title">Pending Orders</h6>
-                    <h3 class="fw-bold mb-0 dashboard-card-value">356</h3>
+                    <h3 class="fw-bold mb-0 dashboard-card-value">{{ $pendingOrders }}</h3>
                 </div>
                 <div class="bg-light p-3 rounded-circle dashboard-icon-circle">
                     <i class="bi bi-clock-history fs-4 text-danger"></i>
@@ -65,15 +65,16 @@
 </div>
 
 
+
 <div class="row g-4">
     <div class="col-lg-7">
         <div class="card border-0 shadow-sm h-100 p-4">
-            <h5 class="fw-bold card-title-dark mb-4">Sales Performance (Last 6 Months)</h5>
+            <h5 class="fw-bold card-title-dark">Sales Performance (Last 6 Months)</h5>
             <div class="chart-container" style="height: 300px;">
                 <canvas id="salesChart"></canvas>
-                <div class="d-flex justify-content-center align-items-center h-100 text-muted border rounded p-4 chart-placeholder">
+                <!-- <div class="d-flex justify-content-center align-items-center h-100 text-muted border rounded p-4 chart-placeholder">
                     <p class="m-0">📊 Chart Placeholder: Implement Chart.js or ApexCharts here.</p>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
@@ -111,61 +112,6 @@
                     <span class="badge bg-secondary-subtle text-dark p-2">755 sold</span>
                 </li>
             </ul>
-        </div>
-    </div>
-</div>
-
-
-<div class="row mt-5">
-    <div class="col-12">
-        <div class="card border-0 shadow-sm p-4">
-            <h5 class="fw-bold card-title-dark mb-4">Recent Orders</h5>
-            <div class="table-responsive">
-                <table class="table table-hover align-middle recent-orders-table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Order ID</th>
-                            <th scope="col">Customer</th>
-                            <th scope="col">Date</th>
-                            <th scope="col">Amount</th>
-                            <th scope="col">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>#ORD9001</td>
-                            <td class="fw-medium">Jane Doe</td>
-                            <td>2025-10-09</td>
-                            <td>$129.50</td>
-                            <td><span class="badge bg-success">Delivered</span></td>
-                        </tr>
-                        <tr>
-                            <td>#ORD9002</td>
-                            <td class="fw-medium">Mike Johnson</td>
-                            <td>2025-10-09</td>
-                            <td>$45.00</td>
-                            <td><span class="badge bg-warning text-dark">Processing</span></td>
-                        </tr>
-                        <tr>
-                            <td>#ORD9003</td>
-                            <td class="fw-medium">Sarah Lee</td>
-                            <td>2025-10-08</td>
-                            <td>$350.99</td>
-                            <td><span class="badge bg-info text-dark">Shipped</span></td>
-                        </tr>
-                        <tr>
-                            <td>#ORD9004</td>
-                            <td class="fw-medium">David Kim</td>
-                            <td>2025-10-08</td>
-                            <td>$15.00</td>
-                            <td><span class="badge bg-danger">Cancelled</span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="text-end mt-3">
-                <a  class="text-dark fw-bold text-decoration-none">View All Orders &rarr;</a>
-            </div>
         </div>
     </div>
 </div>
