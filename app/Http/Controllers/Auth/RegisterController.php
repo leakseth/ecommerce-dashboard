@@ -9,13 +9,11 @@ use Illuminate\Support\Facades\Hash;
 
 class RegisterController extends Controller
 {
-    // Show register form
     public function showRegisterForm()
     {
-        return view('auth.register'); // create view resources/views/auth/register.blade.php
+        return view('auth.register');
     }
 
-    // Handle registration
     public function register(Request $request)
     {
         $request->validate([
@@ -28,11 +26,12 @@ class RegisterController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role' => 0, // default user
         ]);
 
-        // Login automatically after register
         auth()->login($user);
 
-        return redirect()->route('dashboard');
+        // redirect to store (user home)
+        return redirect()->route('frontends.store');
     }
 }

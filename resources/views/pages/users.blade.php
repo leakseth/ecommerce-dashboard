@@ -31,7 +31,7 @@
                                             <!-- Edit Button -->
                                             <button 
                                                 type="button" 
-                                                class="dropdown-item custom-dropdown-item text-primary"
+                                                class="dropdown-item custom-dropdown-item text-primary edit-user-btn"
                                                 data-bs-toggle="modal" 
                                                 data-bs-target="#editUserModal"
                                                 data-id="{{ $user->id }}"
@@ -130,8 +130,6 @@
                 </div>
             </div>
 
-
-            <!-- edit -->
             <!-- Edit User Modal -->
             <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
@@ -158,7 +156,7 @@
 
                                 <div class="mb-3">
                                     <label class="form-label fw-bold">Phone</label>
-                                    <input type="text" name="phone" class="form-control custom-form-control" id="editPhone" required>
+                                    <input type="text" name="phone" class="form-control custom-form-control" id="editPhone">
                                 </div>
 
                                 <div class="mb-3">
@@ -202,32 +200,31 @@
                 </div>
             </div>
 
-             
-
         </div>
             @endsection
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const editUserModal = document.getElementById('editUserModal');
-    const editUserForm = document.getElementById('editUserForm');
+    // When the modal is triggered
+    const editButtons = document.querySelectorAll('.edit-user-btn');
+    const editForm = document.getElementById('editUserForm');
 
-    editUserModal.addEventListener('show.bs.modal', function (event) {
-        const button = event.relatedTarget;
+    editButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const userId = this.getAttribute('data-id');
+            const userName = this.getAttribute('data-name');
+            const userEmail = this.getAttribute('data-email');
+            const userPhone = this.getAttribute('data-phone');
+            const userRole = this.getAttribute('data-role');
 
-        // ទទួលទិន្នន័យពី data-attributes
-        const id = button.getAttribute('data-id');
-        const name = button.getAttribute('data-name');
-        const email = button.getAttribute('data-email');
-        const phone = button.getAttribute('data-phone');
-        const role = button.getAttribute('data-role');
+            // Fill modal input fields
+            document.getElementById('editName').value = userName;
+            document.getElementById('editEmail').value = userEmail;
+            document.getElementById('editPhone').value = userPhone;
+            document.getElementById('editRole').value = userRole;
 
-        // បញ្ចូលទៅក្នុង form fields
-        editUserForm.action = `/admin/users/${id}`; // 🔥 PUT route
-        document.getElementById('editUserId').value = id;
-        document.getElementById('editName').value = name;
-        document.getElementById('editEmail').value = email;
-        document.getElementById('editPhone').value = phone;
-        document.getElementById('editRole').value = role;
+            // Update form action dynamically
+            editForm.action = `/admin/users/${userId}`;
+        });
     });
 
     var deleteUserModal = document.getElementById('deleteUserModal');

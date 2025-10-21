@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -15,4 +16,5 @@ class DashboardController extends Controller
         $pendingOrders = 0; // Placeholder for future implementation
         return view('pages.dashboard', compact('totalProducts', 'totalUsers', 'revenue', 'pendingOrders'));
     }
+
 }

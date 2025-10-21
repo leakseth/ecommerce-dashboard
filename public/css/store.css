@@ -1,0 +1,87 @@
+    
+    /* home */
+    body {
+      background-color: #f9fafb;
+    }
+    .navbar-brand-box {
+      width: 2rem;
+      height: 2rem;
+      background: #000;
+      border-radius: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .navbar-brand-box span {
+      color: white;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+    .btn-black {
+      background-color: #000;
+      color: white;
+      border-radius: 9999px;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+    .btn-black:hover {
+      background-color: #ffffff;
+      color: #000;
+      border: 1px solid #000;
+    }
+    .btn-outline-black {
+      border: 1px solid #000;
+      color: #000;
+      border-radius: 9999px;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+    .btn-outline-black:hover {
+      background-color: #000;
+      color: white;
+    }
+    footer {
+      background-color: #f8f9fa;
+      border-top: 1px solid #dee2e6;
+    }
+    footer a {
+      color: #6c757d;
+      text-decoration: none;
+    }
+    footer a:hover {
+      color: #000;
+    }
+    .bg-gray-200 {
+      background-color: #e5e7eb;
+    }
+
+
+    /* home */
+    body {
+  background-color: #f9fafb;
+}
+
+.btn-black {
+  background-color: #000;
+  color: white;
+  border-radius: 9999px;
+  font-weight: 600;
+  transition: 0.3s;
+}
+.btn-black:hover {
+  background-color: #fff;
+  color: #000;
+  border: 1px solid #000;
+}
+
+.btn-outline-black {
+  border: 1px solid #000;
+  color: #000;
+  border-radius: 9999px;
+  font-weight: 600;
+  transition: 0.3s;
+}
+.btn-outline-black:hover {
+  background-color: #000;
+  color: white;
+}

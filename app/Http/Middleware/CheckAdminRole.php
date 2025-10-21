@@ -14,8 +14,10 @@ class CheckRole
             return redirect()->route('login.form');
         }
 
+        // ប្រៀបធៀប role តាមដែលបានកំណត់
         if (Auth::user()->role != $role) {
-            return redirect()->route('admin.list'); // role 0 users
+            // ប្រសិនបើមិនស្មើ role ត្រូវ redirect ទៅ home
+            return redirect()->route('store');
         }
 
         return $next($request);

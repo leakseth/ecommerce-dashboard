@@ -11,7 +11,7 @@ class LoginController extends Controller
     // Show login form
     public function showLoginForm()
     {
-        return view('auth.login'); // only show form, no login here
+        return view('auth.login');
     }
 
     // Handle login
@@ -25,12 +25,14 @@ class LoginController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
+            // Redirect by role
             if (Auth::user()->role == 1) {
-                return redirect()->route('dashboard'); // admin
+                // 🔸 Admin
+                return redirect()->route('dashboard');
             } else {
-                return redirect()->route('store'); // role 0 → route name = 'store'
+                // 🔹 Normal user
+                return redirect()->route('store');
             }
-
         }
 
         return back()->withErrors([
@@ -45,6 +47,7 @@ class LoginController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
+        // Redirect to login form
         return redirect()->route('login.form');
     }
 }

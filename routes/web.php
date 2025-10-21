@@ -1,38 +1,47 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\SettingController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PageController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\SerttingController;
+use App\Http\Controllers\Admin\UserController;
 
-// -------------------- DEFAULT PAGE --------------------
-Route::get('/', function () {
-    if (auth()->check()) {
-        return auth()->user()->role == 1
-            ? redirect()->route('dashboard')
-            : redirect()->route('user.dashboard');
-    }
-    return redirect()->route('login.form');
+// -------------------- FRONTEND ROUTES --------------------
+// Public pages (no login required)
+Route::controller(PageController::class)->group(function () {
+    Route::get('/', 'home')->name('store');
+    Route::get('/shop', 'shop')->name('shop');
+    Route::get('/about', 'about')->name('about');
+    Route::get('/contact', 'contact')->name('contact');
 });
 
-// -------------------- GUEST ROUTES --------------------
-Route::middleware('guest')->group(function () {
-    Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login.form');
-    Route::post('/login', [LoginController::class, 'login'])->name('login');
-    Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register.form');
-    Route::post('/register', [RegisterController::class, 'register'])->name('register');
-});
+// Checkout & Cart
+Route::get('/checkout', [CartController::class, 'index'])->name('checkout');
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
+Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
+Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
+Route::post('/cart/save', [CartController::class, 'save'])->name('cart.save');
 
 // -------------------- AUTH ROUTES --------------------
-Route::middleware(['auth'])->group(function () {
-    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+// Login / Register page for guests only
+Route::middleware('guest')->group(function () {
+    Route::get('/auth/login', [LoginController::class, 'showLoginForm'])->name('login.form');
+    Route::post('/auth/login', [LoginController::class, 'login'])->name('login');
+    Route::get('/auth/register', [RegisterController::class, 'showRegisterForm'])->name('register.form');
+    Route::post('/auth/register', [RegisterController::class, 'register'])->name('register');
+});
 
-    // -------------------- ADMIN ROUTES --------------------
-    Route::middleware('role:1')->prefix('admin')->group(function () {
+// -------------------- LOGOUT --------------------
+Route::middleware('auth')->post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+// -------------------- ADMIN ROUTES --------------------
+Route::middleware('role:1')->prefix('admin')->group(function () {
 
         // Dashboard
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -70,12 +79,11 @@ Route::middleware(['auth'])->group(function () {
         // Optional pages
         Route::view('/orders', 'pages.orders')->name('orders');
         Route::view('/settings', 'pages.settings')->name('settings');
-    });
+});
 
-    // -------------------- USER ROUTES --------------------
-    Route::middleware('role:0')->prefix('user')->group(function () {
-        Route::get('/', function () {
-            return view('pages.store');
-        })->name('user.dashboard');
-    });
+// -------------------- USER ROUTES --------------------
+Route::middleware(['auth', 'role:0'])->prefix('user')->group(function () {
+    Route::get('/', function () {
+        return view('pages.store');
+    })->name('user.dashboard');
 });

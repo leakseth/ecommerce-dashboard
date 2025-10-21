@@ -49,7 +49,7 @@
               </a>
             </li>
             <li class="nav-item mb-2">
-              <a href="{{ route('user.store') }}" class="nav-link text-black {{ request()->is('store') ? 'active' : '' }}">
+              <a href="{{ route('store') }}" class="nav-link text-black {{ request()->is('store') ? 'active' : '' }}">
                 <i class="bi bi-shop me-2"></i>Store
               </a>
             </li>
@@ -63,10 +63,10 @@
           <div class="d-flex align-items-center">
               <img class="rounded-circle me-2" style="width: 45px;" src="https://thumbs.dreamstime.com/b/red-admin-sign-pc-laptop-vector-illustration-administrator-icon-screen-controller-man-system-box-88756468.jpg" alt="Admin">
               <span class="fw-semibold">
-                  Admin: {{ Auth::check() ? Auth::user()->name : 'Guest' }}
-                </span>
+                   {{ Auth::check() ? Auth::user()->name : 'Guest' }}
+              </span>
           </div>
-          <button type="button" class="btn btn-outline-dark btn-sm px-2 logout-toggle-btn rounded-4" data-bs-toggle="modal" data-bs-target="#logoutModal">
+          <button type="button" class="btn btn-outline-dark btn-sm px-2 logout-toggle-btn" data-bs-toggle="modal" data-bs-target="#logoutModal">
               <i class="bi bi-box-arrow-right"></i>
               <span  class="logout-text">Logout</span>
           </button>
