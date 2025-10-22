@@ -57,13 +57,16 @@
             <td>${{ number_format($product->price, 2) }}</td>
             <td>{{ $product->stock }}</td>
             <td>
-                @if($product->status == 'in_stock')
-                    <span class="badge bg-success-subtle text-success">In Stock</span>
-                @elseif($product->status == 'low_stock')
-                    <span class="badge bg-warning-subtle text-warning">Low Stock</span>
-                @else
-                    <span class="badge bg-danger-subtle text-danger">Out of Stock</span>
-                @endif
+
+                  @php
+                    $stock = $product->stock;
+                    $badgeClass = $stock > 10 ? 'bg-success text-light' : ($stock > 0 ? 'bg-warning text-dark' : 'bg-danger');
+                    $status = $stock > 10 ? 'In Stock' : ($stock > 0 ? 'Low Stock' : 'Out of Stock');
+                  @endphp
+
+                <span class="badge {{ $badgeClass }}">
+                    {{ $product->status }}
+                </span>
             </td>
             <td> 
                 <button 
@@ -143,24 +146,24 @@
                             </select>
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-6">
                             <label class="form-label fw-bold form-label-custom">Price ($)</label>
                             <input type="number" step="0.01" name="price" class="form-control custom-form-control" required>
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-6">
                             <label class="form-label fw-bold form-label-custom">Stock</label>
                             <input type="number" name="stock" class="form-control custom-form-control" required>
                         </div>
 
-                        <div class="col-md-6">
+                        <!-- <div class="col-md-6">
                             <label class="form-label fw-bold form-label-custom">Status</label>
                             <select name="status" class="form-select custom-form-control" required>
                                 <option value="in_stock">In Stock</option>
                                 <option value="low_stock">Low Stock</option>
                                 <option value="out_of_stock">Out of Stock</option>
                             </select>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
 
@@ -219,24 +222,24 @@
                             </select>
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-6">
                             <label class="form-label fw-bold form-label-custom">Price ($)</label>
                             <input type="number" step="0.01" name="price" id="editProductPrice" class="form-control custom-form-control" required>
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-6">
                             <label class="form-label fw-bold form-label-custom">Stock</label>
                             <input type="number" name="stock" id="editProductStock" class="form-control custom-form-control" required>
                         </div>
 
-                        <div class="col-md-6">
+                        <!-- <div class="col-md-6">
                             <label class="form-label fw-bold form-label-custom">Status</label>
                             <select name="status" class="form-select custom-form-control" id="editProductStatus" required>
                                 <option value="in_stock">In Stock</option>
                                 <option value="low_stock">Low Stock</option>
                                 <option value="out_of_stock">Out of Stock</option>
                             </select>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
 
@@ -257,11 +260,11 @@
                 <h5 class="modal-title" id="deleteProductLabel">Delete Product</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form id="deleteProductForm" method="POST">
+            <form action="{{ url('admin/products/'.$product->id) }}" id="deleteProductForm" method="POST">
                 @csrf
                 @method('DELETE')
                 <div class="modal-body">
-                    <p>Are you sure you want to delete <strong id="deleteProductNameText">this product</strong>? This action cannot be undone.</p>
+                    <p>Are you sure you want to delete <strong id="deleteProductNameText">{{$product->name}}</strong>? This action cannot be undone.</p>
                 </div>
                 <div class="modal-footer border-0">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -309,7 +312,6 @@ document.addEventListener('DOMContentLoaded', function () {
             const productCategory = button.getAttribute('data-category');
             const productPrice = button.getAttribute('data-price');
             const productStock = button.getAttribute('data-stock');
-            const productStatus = button.getAttribute('data-status');
             const productImage = button.getAttribute('data-image');
             const productDescription = button.getAttribute('data-description');
 
@@ -320,7 +322,6 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('editProductPrice').value = productPrice;
             document.getElementById('editProductStock').value = productStock;
             document.getElementById('editProductCategory').value = productCategory;
-            document.getElementById('editProductStatus').value = productStatus;
             document.getElementById('editProductDescription').value = productDescription || '';
 
             const imagePreview = document.getElementById('editImagePreview');

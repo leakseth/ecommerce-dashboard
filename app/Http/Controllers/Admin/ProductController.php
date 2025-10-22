@@ -17,27 +17,28 @@ class ProductController extends Controller
     }
 
     public function store(Request $request){
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'category' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
-            'status' => 'required|in:in_stock,out_of_stock,low_stock',
             'description' => 'nullable|string',
         ]);
+        $stock = $validated['stock'];
+        $status = $stock > 10 ? 'in_stock' : ($stock > 0 ? 'low_stock' : 'out_of_stock');
         if($request->hasFile('image')){
             $imagePath = $request->file('image')->store('products', 'public');
         } else {
             $imagePath = null;
         }
         Product::create([
+            'name' => $validated['name'],
+            'description' => $validated['description'],
+            'category' => $validated['category'],
+            'price' => $validated['price'],
+            'stock' => $validated['stock'],
+            'status' => $status, // auto set here based on stock
             'image' => $imagePath,
-            'name' => $request->input('name'),
-            'category' => $request->input('category'),
-            'price' => $request->input('price'),
-            'stock' => $request->stock,
-            'status' => $request->status,
-            'description' => $request->description,
         ]);
 
         return redirect()->route('products.index');
@@ -49,26 +50,30 @@ class ProductController extends Controller
     }
 
     public function update(Request $request, $id){
-        $request->validate([
+        
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'category' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
-            'status' => 'required|in:in_stock,out_of_stock,low_stock',
-            'description' => 'nullable|string',
+            'description' => 'nullable|string', 
         ]);
         $product = Product::findOrFail($id);
+        $stock = $validated['stock'];
+        $status = $stock > 10 ? 'in_stock' : ($stock > 0 ? 'low_stock' : 'out_of_stock');
         if($request->hasFile('image')){
             $imagePath = $request->file('image')->store('products', 'public');
             $product->image = $imagePath;
         }
-        $product->name = $request->name;
-        $product->category = $request->category;
-        $product->price = $request->price;
-        $product->stock = $request->stock;
-        $product->status = $request->status;
-        $product->description = $request->description;
-        $product->save();
+        $product->update([
+            'name' => $validated['name'],
+            'description' => $validated['description'],
+            'category' => $validated['category'],
+            'price' => $validated['price'],
+            'stock' => $validated['stock'],
+            'status' => $status,
+            'image' => $product->image,
+        ]);
         return redirect()->route('products.index');
 
     }
