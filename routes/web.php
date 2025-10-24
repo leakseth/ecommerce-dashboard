@@ -18,15 +18,14 @@ Route::controller(PageController::class)->group(function () {
     Route::get('/shop', 'shop')->name('shop');
     Route::get('/about', 'about')->name('about');
     Route::get('/contact', 'contact')->name('contact');
+    Route::get('/productDetail/{id}', 'productDetail')->name('product.detail');
 });
 
 // Checkout & Cart
-Route::get('/checkout', [CartController::class, 'index'])->name('checkout');
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
+Route::post('/cart/add', [CartController::class, 'add'])->middleware('auth')->name('cart.add');
 Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
 Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
-Route::post('/cart/save', [CartController::class, 'save'])->name('cart.save');
 
 // -------------------- AUTH ROUTES --------------------
 // Login / Register page for guests only

@@ -46,7 +46,12 @@ class ProductController extends Controller
 
     public function show($id){
         $product = Product::findOrFail($id);
-        return view('pages.product', compact('product'));
+        // Related products with the same category
+        $relatedProducts = Product::where('category', $product->category)
+            ->where('id', '!=', $product->id)
+            ->take(4)
+            ->get();
+        return view('pages.product', compact('product', 'relatedProducts'));
     }
 
     public function update(Request $request, $id){

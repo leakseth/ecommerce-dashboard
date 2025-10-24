@@ -13,126 +13,111 @@
 
 <!-- ===== MAIN CONTENT ===== -->
 <main class="container py-5">
-  <!-- Search & Filters -->
-  <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center gap-3 mb-5">
-    <div class="position-relative flex-grow-1" style="max-width: 400px;">
-      <i data-lucide="search" class="position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" style="width: 18px; height: 18px;"></i>
-      <input type="text" id="search" placeholder="Search products..." class="form-control ps-5 rounded-pill border-secondary">
-    </div>
-    <button class="btn btn-outline-dark rounded-pill px-4 d-flex align-items-center">
-      <i data-lucide="sliders-horizontal" class="me-2"></i> Filters
-    </button>
-  </div>
+  <!-- Search and Filters -->
+  <div class="mb-5">
+    <form id="searchForm" method="GET" action="{{ route('shop') }}" class="d-flex flex-column flex-sm-row gap-3 mb-3">
+      <div class="position-relative flex-grow-1" style="max-width: 400px;">
+        <i data-lucide="search"
+          class="position-absolute top-50 translate-middle-y start-0 ms-3 text-muted"
+          style="width: 16px; height: 16px;"></i>
+        <input
+          type="text"
+          name="search"
+          id="searchInput"
+          value="{{ request('search') }}"
+          placeholder="Search products..."
+          class="form-control ps-5 border border-dark rounded-lg text-dark shadow-sm"
+        />
+      </div>
+    </form>
 
-  <!-- Category Filter Buttons -->
-  <div class="mb-4 d-flex flex-wrap gap-2">
-      <a href="{{ route('shop') }}" 
-        class="btn btn-sm rounded-pill px-3 {{ empty($categoryName) ? 'btn-dark active' : 'btn-outline-dark' }}">
-          All
+    <!-- Category Filter Buttons -->
+    <div class="d-flex flex-wrap gap-2" id="categoryFilters">
+      <a href="{{ route('shop') }}"
+        class="btn btn-sm rounded-pill px-3 {{ !request('category') ? 'btn-dark' : 'btn-outline-dark' }}">
+        All
       </a>
-
       @foreach ($categories as $category)
-          <a href="{{ route('shop', ['category' => $category->name]) }}" 
-            class="btn btn-sm rounded-pill px-3 {{ ($categoryName === $category->name) ? 'btn-dark active' : 'btn-outline-dark' }}">
-              {{ $category->name }}
-          </a>
+        <a href="{{ route('shop', ['category' => $category->name, 'search' => request('search')]) }}"
+          class="btn btn-sm rounded-pill px-3 {{ request('category') == $category->name ? 'btn-dark' : 'btn-outline-dark' }}">
+          {{ $category->name }}
+        </a>
       @endforeach
+    </div>
   </div>
-
 
   <!-- ===== PRODUCTS GRID ===== -->
-  <div class="row g-4">
-     @if($products->count() > 0)
-      @foreach ($products as $product)
-        @php
-          $stock = $product->stock;
-          $badgeClass = $stock > 10 ? 'bg-success' : ($stock > 0 ? 'bg-warning text-dark' : 'bg-danger');
-          $status = $stock > 10 ? 'In Stock' : ($stock > 0 ? 'Low Stock' : 'Out of Stock');
-        @endphp
-
-        <div class="col-12 col-sm-6 col-lg-3">
-          <div class="card border-0 shadow-sm h-100 product-card overflow-hidden transition-all position-relative">
-            <!-- Image -->
-            <div class="position-relative bg-light" style="aspect-ratio: 1 / 1; overflow: hidden;">
-              <img src="{{ asset('storage/' . $product->image) }}"
-                  alt="{{ $product->name }}"
-                  class="img-fluid w-100 h-100 object-fit-cover transition-transform">
-              <span class="position-absolute top-0 end-0 m-2 badge {{ $badgeClass }}">{{ $status }}</span>
-            </div>
-
-            <!-- Product Info -->
-            <div class="p-4 text-center">
-              <h3 class="fw-semibold fs-5 mb-1 text-dark">{{ $product->name }}</h3>
-              <p class="text-muted small mb-2">{{ $product->category ?? 'Uncategorized' }}</p>
-              <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
-                <span class="fw-bold fs-5 text-primary">${{ number_format($product->price, 2) }}</span>
-              </div>
-
-              <button class="btn btn-dark btn-sm w-100 rounded-pill add-to-cart"
-                  data-id="{{ $product->id }}"
-                  data-name="{{ $product->name }}"
-                  data-price="{{ $product->price }}"
-                  data-image="{{ asset('storage/' . $product->image) }}">
-                <i data-lucide="shopping-cart" class="me-1"></i> Add to Cart
-              </button>
-            </div>
-          </div>
-        </div>
-      @endforeach
-    @else
-    <div class="col-12 text-center py-5">
-            <h4 class="text-muted">No products found in this category.</h4>
-        </div>
-    @endif
+  <div id="productGrid" class="row g-4">
+    @include('partials.product-grid', ['products' => $products])
   </div>
 
-  <!-- Pagination (Optional) -->
-  <div class="mt-5 text-center">
+  <!-- Pagination -->
+  <div class="mt-5 text-center" id="paginationLinks">
     {{ $products->links('pagination::bootstrap-5') }}
   </div>
 </main>
-
 @endsection
 
 @push('scripts')
 <script>
-document.querySelectorAll('.add-to-cart').forEach(btn => {
-  btn.addEventListener('click', async () => {
-    const product = {
-      id: btn.dataset.id,
-      name: btn.dataset.name,
-      price: btn.dataset.price,
-      image: btn.dataset.image,
-      _token: '{{ csrf_token() }}'
-    };
 
-    const res = await fetch('{{ route("cart.add") }}', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': product._token },
-      body: JSON.stringify(product)
-    });
+  
+document.addEventListener('DOMContentLoaded', () => {
+  const searchInput = document.getElementById('searchInput');
+  let typingTimer;
 
-    const data = await res.json();
-    if (data.success) {
-      const alertBox = document.createElement('div');
-      alertBox.className = 'alert alert-success position-fixed top-0 start-50 translate-middle-x mt-3 shadow';
-      alertBox.textContent = '🛒 ' + data.message;
-      document.body.appendChild(alertBox);
-      setTimeout(() => alertBox.remove(), 2500);
+  // Live search (auto reload while typing)
+  searchInput.addEventListener('input', function() {
+    clearTimeout(typingTimer);
+    typingTimer = setTimeout(() => {
+      fetchFilteredData();
+    }, 400); // wait 400ms after last keystroke
+  });
+
+  async function fetchFilteredData(url = null) {
+    const query = searchInput.value.trim();
+    const category = new URLSearchParams(window.location.search).get('category');
+    const params = new URLSearchParams();
+
+    if (query) params.append('search', query);
+    if (category) params.append('category', category);
+
+    const fetchUrl = url || `{{ route('shop') }}?${params.toString()}`;
+
+    try {
+      const res = await fetch(fetchUrl, { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
+      const html = await res.text();
+
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, 'text/html');
+
+      // Replace product grid and pagination
+      document.getElementById('productGrid').innerHTML = doc.querySelector('#productGrid').innerHTML;
+      document.getElementById('paginationLinks').innerHTML = doc.querySelector('#paginationLinks').innerHTML;
+
+      lucide.createIcons(); // re-init icons
+    } catch (err) {
+      console.error('Error fetching search results:', err);
+    }
+  }
+
+  // Handle pagination links dynamically
+  document.addEventListener('click', function(e) {
+    const link = e.target.closest('.pagination a');
+    if (link) {
+      e.preventDefault();
+      fetchFilteredData(link.href);
     }
   });
 });
-
-// Hover effects for product cards
-document.querySelectorAll('.product-card img').forEach(img => {
-  img.addEventListener('mouseenter', () => img.classList.add('scale-105'));
-  img.addEventListener('mouseleave', () => img.classList.remove('scale-105'));
-});
 </script>
+
 
 <style>
 .product-card img { transition: transform 0.3s ease; }
 .scale-105 { transform: scale(1.05); }
-.btn:hover { color: #0d6efd !important; } /* hover only changes text color */
+.btn:hover { color: #fff !important; }
+
+
 </style>
 @endpush

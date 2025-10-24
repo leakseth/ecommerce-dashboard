@@ -31,9 +31,9 @@
 @endif
 
 
-<div class="card border-0 shadow-sm p-4">
-    <table class="table align-middle table-hover">
-        <thead class="table-light">
+<div class="card border-0 shadow-sm px-4 py-2"  style="max-height: 600px;  overflow-y: auto;">
+    <table class="table align-middle table-hover mb-0 ">
+        <thead class="table-light sticky-top">
             <tr>
                 <th>ID</th>
                 <th>Image</th>
@@ -47,58 +47,60 @@
             </tr>
         </thead>
         <tbody>
-        @foreach($products as $product)
-        <tr>
-            <td>{{ $product->id }}</td>
-            <td><img src="{{ asset('storage/'.$product->image) }}" class="rounded" width="60" height="60" style="object-fit: cover;"></td>
-            <td>{{ $product->name }}</td>
-            <td>{{ Str::limit($product->description, 30) }}</td>
-            <td>{{ $product->category }}</td>
-            <td>${{ number_format($product->price, 2) }}</td>
-            <td>{{ $product->stock }}</td>
-            <td>
+            @foreach($products as $product)
+                <tr>
+                    <td>{{ $product->id }}</td>
+                    <td><img src="{{ asset('storage/'.$product->image) }}" class="rounded" style="  object-fit: cover; width: 70px; height:auto;"></td>
+                    <td>{{ $product->name }}</td>
+                    <td>{{ Str::limit($product->description, 30) }}</td>
+                    <td>{{ $product->category }}</td>
+                    <td>${{ number_format($product->price, 2) }}</td>
+                    <td>{{ $product->stock }}</td>
+                    <td>
 
-                  @php
-                    $stock = $product->stock;
-                    $badgeClass = $stock > 10 ? 'bg-success text-light' : ($stock > 0 ? 'bg-warning text-dark' : 'bg-danger');
-                    $status = $stock > 10 ? 'In Stock' : ($stock > 0 ? 'Low Stock' : 'Out of Stock');
-                  @endphp
+                        @php
+                            $stock = $product->stock;
+                            $badgeClass = $stock > 10 ? 'bg-success text-light' : ($stock > 0 ? 'bg-warning text-dark' : 'bg-danger');
+                            $status = $stock > 10 ? 'In Stock' : ($stock > 0 ? 'Low Stock' : 'Out of Stock');
+                        @endphp
 
-                <span class="badge {{ $badgeClass }}">
-                    {{ $product->status }}
-                </span>
-            </td>
-            <td> 
-                <button 
-                    type="button" 
-                    class="btn btn-outline-dark btn-sm edit-product-btn"
-                    data-bs-toggle="modal" 
-                    data-bs-target="#editProductModal"
-                    data-id="{{ $product->id }}"
-                    data-name="{{ $product->name }}"
-                    data-category="{{ $product->category }}"
-                    data-price="{{ $product->price }}"
-                    data-stock="{{ $product->stock }}"
-                    data-status="{{ $product->status }}"
-                    data-description="{{ $product->description }}"
-                    data-image="{{ asset('storage/'.$product->image) }}">
-                    <i class="bi bi-pencil"></i>
-                </button>
- 
-                
-                <button type="button" class="btn btn-outline-danger btn-sm delete-product-btn" 
-                    data-bs-toggle="modal" 
-                    data-bs-target="#deleteProductModal"
-                    data-id="{{ $product->id }}"
-                    data-name="{{ $product->name }}"
-                >
-                    <i class="bi bi-trash"></i>
-                </button> 
-            </td>
-        </tr>
-        @endforeach
+                        <span class="badge {{ $badgeClass }}">
+                            {{ $product->status }}
+                        </span>
+                    </td>
+                    <td> 
+                        <button 
+                            type="button" 
+                            class="btn btn-outline-dark btn-sm edit-product-btn"
+                            data-bs-toggle="modal" 
+                            data-bs-target="#editProductModal"
+                            data-id="{{ $product->id }}"
+                            data-name="{{ $product->name }}"
+                            data-category="{{ $product->category }}"
+                            data-price="{{ $product->price }}"
+                            data-stock="{{ $product->stock }}"
+                            data-status="{{ $product->status }}"
+                            data-description="{{ $product->description }}"
+                            data-image="{{ asset('storage/'.$product->image) }}">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+        
+                        
+                        <button type="button" class="btn btn-outline-danger btn-sm delete-product-btn" 
+                            data-bs-toggle="modal" 
+                            data-bs-target="#deleteProductModal"
+                            data-id="{{ $product->id }}"
+                            data-name="{{ $product->name }}"
+                        >
+                            <i class="bi bi-trash"></i>
+                        </button> 
+                    </td>
+                </tr>
+            @endforeach
         </tbody>
+        
     </table>
+
 </div>
 
 
@@ -125,7 +127,7 @@
                         </div>
                         <div class="col-md-6 d-flex justify-content-center align-items-center">
                             <img id="addImagePreview" src="https://shop.songprinting.com/global/images/PublicShop/ProductSearch/prodgr_default_300.png" alt="Preview" 
-                                class="rounded" style="width:250px; height:150px; object-fit:cover; border: dashed 2px #ccc;">
+                                class="rounded" style="width:250px; height:200px; object-fit:cover; border: dashed 2px #ccc;">
                         </div>
 
                         <div class="col-md-6">
@@ -203,7 +205,7 @@
 
                         <div class="col-md-6 d-flex justify-content-center align-items-center">
                             <img id="editImagePreview" src="https://via.placeholder.com/120?text=Current" alt="Current Image" 
-                                class="rounded" style="width:200px; height:120px; object-fit:cover; border: dashed 2px #ccc;">
+                                class="rounded" style="width:250px; height:200px; object-fit:cover; border: dashed 2px #ccc;">
                         </div>
 
                         <div class="col-md-6">
@@ -264,7 +266,10 @@
                 @csrf
                 @method('DELETE')
                 <div class="modal-body">
-                    <p>Are you sure you want to delete <strong id="deleteProductNameText">{{$product->name}}</strong>? This action cannot be undone.</p>
+                    <p>Are you sure you want to delete 
+                        <strong id="deleteProductNameText">
+                            {{$product->name}}
+                        </strong>? This action cannot be undone.</p>
                 </div>
                 <div class="modal-footer border-0">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -341,6 +346,23 @@ document.addEventListener('DOMContentLoaded', function () {
             };
         });
     }
+
+    const deleteButtons = document.querySelectorAll('.delete-product-btn');
+    const deleteNameText = document.getElementById('deleteProductNameText');
+    const deleteForm = document.getElementById('deleteProductForm');
+
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const productId = this.getAttribute('data-id');
+            const productName = this.getAttribute('data-name');
+
+            // បង្ហាញឈ្មោះក្នុង modal
+            deleteNameText.textContent = productName;
+
+            // កំណត់ action URL (ឧទាហរណ៍: /admin/products/3)
+            deleteForm.action = `/admin/products/${productId}`;
+        });
+    });
 });
 </script>
 

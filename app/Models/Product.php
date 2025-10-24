@@ -11,6 +11,7 @@ class Product extends Model
     use HasFactory;
     protected $fillable = [
         'image',
+        'images',
         'name',
         'category',
         'price',
@@ -18,6 +19,11 @@ class Product extends Model
         'status',
         'description',
     ];
+
+    protected $casts = [
+        'images' => 'array',
+    ];
+
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);

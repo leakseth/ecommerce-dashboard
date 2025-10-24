@@ -4,38 +4,44 @@
 
 @section('content')
 
-{{-- ===== HERO SECTION ===== --}}
-<section class="bg-light border-bottom w-100 min-vh-75 d-flex align-items-center">
-    <div class="container py-5" style="height: 100vh;">
+<!-- HERO SECTION -->
+<section class="bg-light border-bottom d-flex align-items-center min-vh-75 py-5 py-md-0">
+    <div class="container align-content-center" style="height: 100vh;">
         <div class="row align-items-center g-5">
-            <div class="col-md-6 text-center text-md-start">
-                <h1 class="display-4 fw-bold text-dark mb-4">
+            <!-- LEFT: TEXT -->
+            <div class="col-lg-6 text-center text-lg-start mt-0">
+                <h1 class="display-5 fw-bold text-dark mb-3">
                     Experience <span class="text-primary-emphasis">Premium</span> for Modern Living
                 </h1>
                 <p class="fs-5 text-secondary mb-4">
                     Discover our curated collection of high-quality electronics and accessories designed to seamlessly enhance your lifestyle and productivity.
                 </p>
-                <a href="{{ route('shop') }}" class="btn btn-dark btn-lg me-3 px-4 py-2 shadow-sm">Shop Now</a>
-                <a href="{{ route('about') }}" class="btn btn-outline-dark btn-lg px-4 py-2">Learn More</a>
+                <div class="d-flex flex-column flex-sm-row justify-content-center justify-content-lg-start gap-3">
+                    <a href="{{ route('shop') }}" class="btn btn-dark btn-lg px-4 py-2 shadow-sm">Shop Now</a>
+                    <a href="{{ route('about') }}" class="btn btn-outline-dark btn-lg px-4 py-2">Learn More</a>
+                </div>
             </div>
-            <div class="col-md-6 text-center text-md-end">
+
+            <!-- RIGHT: IMAGE -->
+            <div class="col-lg-6 text-center">
                 <img src="https://p3-ofp.static.pub//fes/cms/2025/04/29/g1i46qj9s4jax5zsk33oyvmf1g6dc1728551.png?width=400&height=400"
                      alt="Modern Electronic Products"
                      class="img-fluid"
-                     style="max-width: 500px;">
+                     style="max-width: 500px; width: 100%; height: auto;">
             </div>
         </div>
     </div>
 </section>
 
-{{-- ===== FEATURED PRODUCTS ===== --}}
+
+     <!-- FEATURED PRODUCTS -->
 <section class="container py-5 my-md-5">
     <div class="text-center mb-5">
         <h2 class="fw-bold mb-2 fs-2 text-dark">Featured <span class="text-primary-emphasis">Products</span></h2>
         <p class="text-secondary fs-5">Handpicked items that our customers love</p>
     </div>
 
-    <div class="row g-4 justify-content-center">
+    <div class="row g-4 justify-content-start">
         @foreach ($products as $product)
             @php
                 $stock = $product->stock;
@@ -55,7 +61,7 @@
                         <h5 class="fw-semibold mb-1 text-dark">{{ $product->name }}</h5>
                         <p class="text-muted small mb-2">{{ $product->category ?? 'Uncategorized' }}</p>
                         <span class="fw-bold fs-5 d-block mb-3 text-primary">${{ number_format($product->price, 2) }}</span>
-                        <a class="btn btn-dark btn-sm w-100">Views Details</a>
+                        <a href="{{ route('product.detail', $product->id) }}" class="btn btn-dark btn-sm w-100">Views Details</a>
                     </div>
                 </div>
             </div>
