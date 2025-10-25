@@ -62,9 +62,9 @@
             <i data-lucide="shopping-cart" class="me-2"></i> Add to Cart
           </button>
 
-          <a href="{{ url()->previous() }}" class="btn btn-outline-secondary px-4 py-2">
+          <button action="{{ route('shop') }}" class="btn btn-outline-secondary px-4 py-2">
             <i class="bi bi-arrow-left"></i> Back to Shop
-          </a>
+          </button>
         </div>
         
       </div>
@@ -95,7 +95,7 @@
             <div class="card-body text-center p-3">
               <h6 class="fw-semibold mb-1 text-dark text-truncate">{{ $related->name }}</h6>
               <span class="fw-bold text-primary">${{ number_format($related->price, 2) }}</span>
-              <div class="mt-3 d-flex flex-column gap-2">
+              <div class="mt-3 d-flex flex-column gap-2 w-full">
                 <a href="{{ route('product.detail', $related->id) }}" 
                    class="btn btn-outline-dark btn-sm w-100">View Details</a>
                 <button class="btn btn-dark btn-sm w-100 add-to-cart"

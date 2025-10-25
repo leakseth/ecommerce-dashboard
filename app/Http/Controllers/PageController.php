@@ -9,36 +9,51 @@ use Illuminate\Http\Request;
 class PageController extends Controller
 {
     public function home() {
-        $products = Product::paginate(4);
+        $products = Product::with('category')->paginate(4);
         return view('components.home', compact('products'));
     }
 
-    public function shop(Request $request) {
-        $categoryName = $request->query('category'); // e.g., ?category=Electronics
-        $categories = Category::all(); // List of all categories
-        $search = $request->query('search'); // get search input
-        // Start query builder
-        $productsQuery = Product::query();
+    public function shop(Request $request)
+    {
+        $categoryName = $request->query('category_id'); // e.g., ?category=Electronics
+        $search = $request->query('search');         // search input
+        $sort = $request->query('sort');             // sorting option
 
-        // Filter by category if selected
+        $categories = Category::all(); // all categories
+
+        // Start main query
+        $productsQuery = Product::with('category');
+
+        // Filter by category
         if ($categoryName) {
-            $productsQuery->where('category', $categoryName);
+            $productsQuery->where('category_id', $categoryName);
         }
 
         // Filter by search term
         if ($search) {
             $productsQuery->where(function ($query) use ($search) {
-                $query->where('name', 'like', '%' . $search . '%')
-                    ->orWhere('description', 'like', '%' . $search . '%')
-                    ->orWhere('category', 'like', '%' . $search . '%');
+                $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%")
+                    ->orWhereHas('category', fn($q) => $q->where('name', 'like', "%{$search}%"));
             });
         }
 
-        // Paginate results & keep query string
+
+        // Apply sorting
+        if ($sort == 'low_high') {
+            $productsQuery->orderBy('price', 'asc');
+        } elseif ($sort == 'high_low') {
+            $productsQuery->orderBy('price', 'desc');
+        } else {
+            $productsQuery->latest(); // default: newest first
+        }
+
+        // Paginate results and keep query string
         $products = $productsQuery->paginate(8);
 
-        return view('components.shop', compact('products', 'categories', 'categoryName', 'search'));
+        return view('components.shop', compact('products', 'categories', 'categoryName', 'search', 'sort'));
     }
+
 
     public function about() {
         return view('components.about');
@@ -50,9 +65,9 @@ class PageController extends Controller
 
     public function productDetail($id)
     {
-        $product = Product::findOrFail($id);
+        $product = Product::with('category')->findOrFail($id);
         $categories = Category::all(); // optional, if you want to show sidebar or menu
-        $relatedProducts = Product::where('category', $product->category)
+        $relatedProducts = Product::where('category_id', $product->category_id)
             ->where('id', '!=', $product->id)
             ->limit(4)
             ->get();

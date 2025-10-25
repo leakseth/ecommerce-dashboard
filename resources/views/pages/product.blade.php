@@ -31,7 +31,7 @@
 @endif
 
 
-<div class="card border-0 shadow-sm px-4 py-2"  style="max-height: 600px;  overflow-y: auto;">
+<div class="card border-0 shadow-sm px-4 py-0"  style="max-height: 630px;  overflow-y: auto;">
     <table class="table align-middle table-hover mb-0 ">
         <thead class="table-light sticky-top">
             <tr>
@@ -53,7 +53,7 @@
                     <td><img src="{{ asset('storage/'.$product->image) }}" class="rounded" style="  object-fit: cover; width: 70px; height:auto;"></td>
                     <td>{{ $product->name }}</td>
                     <td>{{ Str::limit($product->description, 30) }}</td>
-                    <td>{{ $product->category }}</td>
+                    <td>{{ $product->category->name }}</td>
                     <td>${{ number_format($product->price, 2) }}</td>
                     <td>{{ $product->stock }}</td>
                     <td>
@@ -93,7 +93,7 @@
                             data-name="{{ $product->name }}"
                         >
                             <i class="bi bi-trash"></i>
-                        </button> 
+                        </button>
                     </td>
                 </tr>
             @endforeach
@@ -137,11 +137,11 @@
 
                         <div class="col-md-6">
                             <label class="form-label fw-bold form-label-custom">Category</label>
-                            <select name="category" class="form-select custom-form-control" required>
+                            <select name="category_id" class="form-select custom-form-control" required>
                                 <option disabled selected>Select category</option>
                                 @isset($categories)
                                     @foreach ($categories as $category)
-                                        <option value="{{$category->name}}">{{$category->name}}</option>
+                                        <option value="{{$category->id}}">{{$category->name}}</option>
                                     @endforeach
                                 @endisset
                                 
@@ -215,10 +215,10 @@
 
                         <div class="col-md-6">
                             <label class="form-label fw-bold form-label-custom">Category</label>
-                            <select name="category" class="form-select custom-form-control" id="editProductCategory" required>
+                            <select name="category_id" class="form-select custom-form-control" id="editProductCategory" required>
                                 @isset($categories)
                                     @foreach ($categories as $category)
-                                        <option value="{{$category->name}}">{{$category->name}}</option>
+                                        <option value="{{$category->id}}">{{$category->name}}</option>
                                     @endforeach
                                 @endisset
                             </select>
@@ -262,20 +262,23 @@
                 <h5 class="modal-title" id="deleteProductLabel">Delete Product</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{ url('admin/products/'.$product->id) }}" id="deleteProductForm" method="POST">
-                @csrf
-                @method('DELETE')
-                <div class="modal-body">
-                    <p>Are you sure you want to delete 
-                        <strong id="deleteProductNameText">
-                            {{$product->name}}
-                        </strong>? This action cannot be undone.</p>
-                </div>
-                <div class="modal-footer border-0">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-danger">Delete</button>
-                </div>
-            </form>
+            @foreach ($products as $product)
+                <form action="{{ url('admin/products/'.$product->id) }}" id="deleteProductForm" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <div class="modal-body">
+                        <p>Are you sure you want to delete 
+                            <strong id="deleteProductNameText">
+                                {{$product->name}}
+                            </strong>? This action cannot be undone.</p>
+                    </div>
+                    <div class="modal-footer border-0">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </div>
+                </form>
+            @endforeach
+            
         </div>
     </div>
 </div>

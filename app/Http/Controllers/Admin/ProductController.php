@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Storage;
 class ProductController extends Controller
 {
     public function index(){
-        $products = Product::all();
+        $products = Product::with('category')->get();
         $categories = Category::all();
         return view('pages.product', compact('products', 'categories'));
     }
@@ -19,7 +19,7 @@ class ProductController extends Controller
     public function store(Request $request){
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'category' => 'required|string|max:255',
+            'category_id' => 'required|exists:categories,id',
             'price' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
             'description' => 'nullable|string',
@@ -34,7 +34,7 @@ class ProductController extends Controller
         Product::create([
             'name' => $validated['name'],
             'description' => $validated['description'],
-            'category' => $validated['category'],
+            'category_id' => $validated['category_id'],
             'price' => $validated['price'],
             'stock' => $validated['stock'],
             'status' => $status, // auto set here based on stock
@@ -45,9 +45,9 @@ class ProductController extends Controller
     }
 
     public function show($id){
-        $product = Product::findOrFail($id);
+        $product = Product::with('category')->findOrFail($id);
         // Related products with the same category
-        $relatedProducts = Product::where('category', $product->category)
+        $relatedProducts = Product::where('category_id', $product->category_id)
             ->where('id', '!=', $product->id)
             ->take(4)
             ->get();
@@ -58,7 +58,7 @@ class ProductController extends Controller
         
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'category' => 'required|string|max:255',
+            'category_id' => 'required|exists:categories,id',
             'price' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
             'description' => 'nullable|string', 
@@ -73,7 +73,7 @@ class ProductController extends Controller
         $product->update([
             'name' => $validated['name'],
             'description' => $validated['description'],
-            'category' => $validated['category'],
+            'category_id' => $validated['category_id'],
             'price' => $validated['price'],
             'stock' => $validated['stock'],
             'status' => $status,

@@ -11,10 +11,11 @@ class CategoryController extends Controller
 {
     public function index(){
         $categories = Category::all();
+        $products = Product::with('category')->get();
         foreach ($categories as $category) {
-            $category->total_products = Product::where('category', $category->name)->count();
+            $category->total_products = $category->products()->count();
         }
-        return view('pages.category', compact('categories'));
+        return view('pages.category', compact('categories', 'products'));
     }
 
     public function store(Request $request){
@@ -27,7 +28,7 @@ class CategoryController extends Controller
         return redirect('/admin/categories')->with('success', 'Category created successfully!');
     }
     public function show($id){
-        $category = Category::findOrFail($id);
+        $category = Category::with('category')->findOrFail($id);
         return view('pages.category', compact('category'));
     }
 

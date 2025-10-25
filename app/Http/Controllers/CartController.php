@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
+use App\Models\OrderItem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+
 
 class CartController extends Controller
 {
@@ -62,5 +67,47 @@ class CartController extends Controller
         }
 
         return response()->json(['success' => true]);
+    }
+
+    public function checkoutPage(){
+        $cart = session()->get('cart', []);
+        if(empty($cart)){
+            return redirect()->route('cart.index')->with('error', 'Your cart is empty');
+        }
+        if(!Auth()->check()){
+            return redirect()->route('login')->with('error', 'Please Login first.');
+        }
+        return view('checkout.index', compact('cart'));
+    }
+
+    public function checkoutConfirm(Request $request){
+        $cart = session()->get('cart', []);
+        if(empty($cart)){
+            return redirect()->back()->with('error', 'Your cart is empty');
+        }
+
+        $total = 0;
+        foreach($cart as $item){
+            $total += $item['price'] * $item['quantity'];
+        }
+
+        $order = Order::create([
+            'user_id'         => auth()->id(),
+            'order_number'    => 'ORD-' . strtoupper(Str::random(8)),
+            'total'           => $total,
+            'status'          => 'pandding',
+            'payment_method'  => $request->payment_method,
+            'shipping_address'=> $request->address,
+        ]);
+
+        foreach($cart as $id => $item){
+            OrderItem::create([
+                'order_id'   => $order->id,
+                'product_id' => $id,
+                'quantity'   => $item['quantity'],
+                'price'      => $item['price'],
+            ]);
+        }
+        session()->forget('cart');
     }
 }

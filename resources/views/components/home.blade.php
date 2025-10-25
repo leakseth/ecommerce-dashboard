@@ -59,7 +59,7 @@
                     </span>
                     <div class="card-body text-center p-3">
                         <h5 class="fw-semibold mb-1 text-dark">{{ $product->name }}</h5>
-                        <p class="text-muted small mb-2">{{ $product->category ?? 'Uncategorized' }}</p>
+                        <p class="text-muted small mb-2">{{ $product->category->name ?? 'Uncategorized' }}</p>
                         <span class="fw-bold fs-5 d-block mb-3 text-primary">${{ number_format($product->price, 2) }}</span>
                         <a href="{{ route('product.detail', $product->id) }}" class="btn btn-dark btn-sm w-100">Views Details</a>
                     </div>

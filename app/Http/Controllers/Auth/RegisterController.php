@@ -32,6 +32,6 @@ class RegisterController extends Controller
         auth()->login($user);
 
         // redirect to store (user home)
-        return redirect()->route('frontends.store');
+        return redirect()->route('store');
     }
 }

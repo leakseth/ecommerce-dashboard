@@ -18,8 +18,11 @@
 
             <div class="d-flex align-items-center justify-content-between border-bottom py-3 cart-item">
               <div class="d-flex align-items-center">
-                <img src="{{ $item['image'] }}" class="rounded-3 me-3"
-                     style="width: 80px; height: 80px; object-fit: cover;">
+                <div style="width: 70px; height: 70px;">
+                  <img src="{{ $item['image'] }}" class=" w-100 h-100 rounded-3 me-3"
+                     style=" object-fit: cover;">
+                </div>
+                
                 <div>
                   <h6 class="fw-semibold mb-1">{{ $item['name'] }}</h6>
                   <p class="text-muted mb-1 small">${{ number_format($item['price'], 2) }}</p>

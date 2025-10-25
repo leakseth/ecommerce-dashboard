@@ -26,6 +26,8 @@ Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('/cart/add', [CartController::class, 'add'])->middleware('auth')->name('cart.add');
 Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
 Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
+Route::get('/checkout', [CategoryController::class, 'checkoutPage'])->name('checkout.page');
+Route::post('/checkout/confirm', [CategoryController::class, 'checkoutConfirm'])->name('checkout.confirm');
 
 // -------------------- AUTH ROUTES --------------------
 // Login / Register page for guests only

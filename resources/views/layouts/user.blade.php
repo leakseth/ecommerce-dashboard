@@ -57,7 +57,7 @@
       <!-- Icons & Login/Logout -->
       <div class="d-flex align-items-center gap-3">
         <a href="{{ route('cart.index') }}" class="nav-link position-relative">
-          <i data-lucide="shopping-cart"></i>
+          <i data-lucide="shopping-cart" class="bi bi-cart2 p-1" style="font-size: 20px;"></i>
           <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
             {{ count(session('cart', [])) }}
           </span>
