@@ -47,10 +47,11 @@
 
                         <td class="text-muted">{{ $order->created_at->format('d M Y, H:i') }}</td>
                         <td>
-                            <a href="{{ route('orders.show', $order->id) }}" 
-                               class="btn btn-sm btn-outline-primary me-2">
+                            <button
+                               class="btn btn-sm btn-outline-primary me-2 view-order"
+                            data-order="{{ json_encode($order->load('orderItems.product')) }}">
                                 <i class="bi bi-eye"></i>
-                            </a>
+                            </button>
 
                             <button class="btn btn-sm btn-outline-secondary me-2 edit-order-btn"
                                 data-bs-toggle="modal"
@@ -72,6 +73,24 @@
     </div>
     @endif
 </div>
+
+<!-- Order Detail Modal -->
+<div class="modal fade" id="orderModal" tabindex="-1" aria-labelledby="orderModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold" id="orderModalLabel">Order Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div id="orderDetailsContent">
+            <p class="text-center text-muted">Loading...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <!-- Edit Order Modal -->
 <div class="modal fade" id="editOrderModal" tabindex="-1" aria-labelledby="editOrderLabel" aria-hidden="true">
@@ -121,6 +140,57 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('orderStatus').value = currentStatus;
         });
     }
+
+    // 
+
+    const orderModal = new bootstrap.Modal(document.getElementById('orderModal'));
+    const orderDetailsContent = document.getElementById('orderDetailsContent');
+
+    document.querySelectorAll('.view-order').forEach(button => {
+        button.addEventListener('click', function() {
+            const order = JSON.parse(this.dataset.order);
+
+            let html = `
+                <p><strong>Order #:</strong> ${order.order_number}</p>
+                <p><strong>User:</strong> ${order.user.name}</p>
+                <p><strong>Total:</strong> $${parseFloat(order.total).toFixed(2)}</p>
+                <p><strong>Status:</strong> ${order.status.charAt(0).toUpperCase() + order.status.slice(1)}</p>
+                <p><strong>Payment Method:</strong> ${order.payment_method}</p>
+                <p><strong>Address:</strong> ${order.shipping_address ?? 'N/A'}</p>
+
+                <h5 class="mt-3">Order Items</h5>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Qty</th>
+                            <th>Price</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            order.order_items.forEach(item => {
+                html += `
+                    <tr>
+                        <td>${item.product ? item.product.name : 'Deleted Product'}</td>
+                        <td>${item.quantity}</td>
+                        <td>$${parseFloat(item.price).toFixed(2)}</td>
+                        <td>$${(item.price * item.quantity).toFixed(2)}</td>
+                    </tr>
+                `;
+            });
+
+            html += `
+                    </tbody>
+                </table>
+            `;
+
+            orderDetailsContent.innerHTML = html;
+            orderModal.show();
+        });
+    });
 });
 </script>
 
