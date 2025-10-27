@@ -25,7 +25,7 @@
         <div>
           <h1 class="fw-bold text-dark mb-2">{{ $product->name }}</h1>
           <p class="text-muted mb-3">
-            Category: <span class="fw-semibold text-dark">{{ $product->category ?? 'Uncategorized' }}</span>
+            Category: <span class="fw-semibold text-dark">{{ $product->category->name ?? 'Uncategorized' }}</span>
           </p>
         </div>
 
@@ -49,8 +49,15 @@
         <!-- Quantity & Add to Cart -->
         <div class="d-flex align-items-center gap-3 mb-4">
           <label class="fw-semibold">Quantity:</label>
-          <input type="number" id="quantity" class="form-control w-auto text-center"
-                 min="1" value="1" style="max-width: 100px;">
+          <!-- <input type="number" id="quantity" class="form-control w-auto text-center"
+                 min="1" value="1" style="max-width: 100px;"> -->
+                <div class="input-group input-group-sm justify-content-end" style="width: 110px;">
+                  <button class="btn btn-outline-secondary btn-sm minus-btn" data-id="{{ $product->id }}">-</button>
+                  <input type="number" id="quantity" class="form-control text-center update-qty"
+                         value="1" min="1"
+                         data-id="{{ $product->id }}">
+                  <button class="btn btn-outline-secondary btn-sm plus-btn" data-id="{{ $product->id }}">+</button>
+                </div>
         </div>
 
         <div class="d-flex flex-wrap gap-3">
@@ -93,7 +100,7 @@
             </span>
 
             <div class="card-body text-center p-3">
-              <h6 class="fw-semibold mb-1 text-dark text-truncate">{{ $related->name }}</h6>
+              <h6 class="fw-semibold mb-1 text-dark text-truncate">{{ $related->category->name }}</h6>
               <span class="fw-bold text-primary">${{ number_format($related->price, 2) }}</span>
               <div class="mt-3 d-flex flex-column gap-2 w-full">
                 <a href="{{ route('product.detail', $related->id) }}" 
@@ -123,7 +130,35 @@
 @push('scripts')
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-  const addBtn = document.querySelector(".add-to-cart");
+
+  // Handle + button
+  document.querySelectorAll('.plus-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const input = btn.parentElement.querySelector('.update-qty');
+      input.value = parseInt(input.value) + 1;
+      updateCart(input.dataset.id, input.value);
+    });
+  });
+
+  // Handle - button
+  document.querySelectorAll('.minus-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const input = btn.parentElement.querySelector('.update-qty');
+      if (parseInt(input.value) > 1) {
+        input.value = parseInt(input.value) - 1;
+        updateCart(input.dataset.id, input.value);
+      }
+    });
+  });
+
+  // Handle manual input
+  document.querySelectorAll('.update-qty').forEach(input => {
+    input.addEventListener('change', () => {
+      updateCart(input.dataset.id, input.value);
+    });
+  });
+
+ const addBtn = document.querySelector(".add-to-cart");
 
   addBtn.addEventListener("click", async () => {
     const userLoggedIn = @json(auth()->check());
@@ -133,7 +168,9 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    const qty = document.getElementById("quantity").value;
+    const qtyInput = document.getElementById("quantity");
+    const qty = qtyInput ? parseInt(qtyInput.value) : 1;
+
     const productData = {
       id: addBtn.dataset.id,
       name: addBtn.dataset.name,
@@ -152,24 +189,31 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     const data = await res.json();
+
     if (data.success) {
-      showAlert('✅ ' + data.message, 'success');
+      // ✅ Update the cart count from backend (to count distinct items only)
       const countEl = document.getElementById("cart-count");
-      if (countEl) countEl.textContent = parseInt(countEl.textContent) + 1;
+      if (countEl) {
+        const resCount = await fetch("{{ route('cart.count') }}");
+        const countData = await resCount.json();
+        countEl.textContent = countData.count;
+      }
+
+      // ✅ Button animation
       addBtn.innerHTML = '<i data-lucide="check"></i> Added';
       setTimeout(() => {
-        addBtn.innerHTML = '<i data-lucide="shopping-cart" class="me-2"></i> Add to Cart';
+        addBtn.innerHTML = '<i data-lucide="shopping-cart" class="me-1"></i> Add to Cart';
         lucide.createIcons();
       }, 1500);
-    } else {
-      showAlert('❌ Something went wrong.', 'danger');
-    }
 
-    lucide.createIcons();
+      showAlert(data.message, "success");
+    } else {
+      showAlert("❌ Something went wrong.", "danger");
+    }
   });
 
   function showAlert(message, type) {
-    const alertBox = document.createElement('div');
+    const alertBox = document.createElement("div");
     alertBox.className = `alert alert-${type} position-fixed top-0 start-50 translate-middle-x mt-3 shadow`;
     alertBox.style.zIndex = 9999;
     alertBox.textContent = message;

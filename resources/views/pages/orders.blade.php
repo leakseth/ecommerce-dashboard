@@ -1,166 +1,172 @@
 @extends('layouts.app')
 
-@section('title', 'Orders')
+@section('title', 'Orders Management')
 
 @section('content')
-<div class="p-4">
-    <header class="d-flex justify-content-between align-items-center mb-4">
+<div class="">
+    <!-- Header Section -->
+    <header class="d-flex justify-content-between align-items-center mb-2">
         <div>
-            <h1 class="fw-bold header-text">Order History</h1>
-            <p class="text-muted subheader-text">View and manage all customer orders.</p>
+            <h1 class="fw-bold header-text">Orders Management</h1>
+            <p class="text-muted subheader-text">View and manage all customer orders efficiently.</p>
         </div>
-        <button class="btn btn-outline-dark add-user-btn">
-            <i class="bi bi-file-earmark-arrow-down me-2"></i> Export Report
-        </button>
     </header>
 
-    <div class="row mb-4">
-        <div class="col-md-4">
-            <input type="text" class="form-control custom-form-control" placeholder="Search by Order ID or Customer Name">
-        </div>
-        <div class="col-md-3">
-            <select class="form-select custom-form-control">
-                <option selected>Filter by Status</option>
-                <option value="Delivered">Delivered</option>
-                <option value="Processing">Processing</option>
-                <option value="Shipped">Shipped</option>
-                <option value="Cancelled">Cancelled</option>
-            </select>
-        </div>
-    </div>
+    @if($orders->isEmpty())
+        <p class="text-center text-muted mt-4">No orders found.</p>
+    @else
 
-    <div class="card border-0 shadow-sm p-4">
+    <div class="card border p-3">
         <div class="table-responsive">
-            <table class="table table-hover align-middle recent-orders-table">
-                <thead>
+            <table class="table align-middle table-hover mb-0">
+                <thead class="table-light">
                     <tr>
-                        <th scope="col">Order ID</th>
-                        <th scope="col">Customer</th>
-                        <th scope="col">Date</th>
-                        <th scope="col">Amount</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Actions</th> </tr>
+                        <th>#</th>
+                        <th>Order Number</th>
+                        <th>User</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th>Placed At</th>
+                        <th>Actions</th>
+                    </tr>
                 </thead>
                 <tbody>
-                    <tr data-bs-toggle="modal" data-bs-target="#orderDetailModal" style="cursor: pointer;">
-                        <td>#ORD9001</td>
-                        <td class="fw-medium">Jane Doe</td>
-                        <td>2025-10-09</td>
-                        <td>$129.50</td>
-                        <td><span class="badge bg-success p-2">Delivered</span></td>
-                        <td><i class="bi bi-eye text-muted"></i></td>
+                    @foreach($orders as $order)
+                    <tr id="order-{{ $order->id }}">
+                        <td>{{ $loop->iteration + ($orders->currentPage()-1)*$orders->perPage() }}</td>
+                        <td class="fw-medium">{{ $order->order_number }}</td>
+                        <td>{{ $order->user->name }}</td>
+                        <td><span class="fw-bold text-dark">${{ number_format($order->total, 2) }}</span></td>
+
+                        <td id="order-status-{{ $order->id }}">
+                            <span class="badge 
+                                {{ $order->status == 'pending' ? 'bg-warning text-dark' : ($order->status == 'ordered' ? 'bg-success' : 'bg-danger') }}">
+                                {{ ucfirst($order->status) }}
+                            </span>
+                        </td>
+
+                        <td class="text-muted">{{ $order->created_at->format('d M Y, H:i') }}</td>
+                        <td>
+                            <a href="{{ route('orders.show', $order->id) }}" 
+                               class="btn btn-sm btn-outline-primary me-2">
+                                <i class="bi bi-eye"></i>
+                            </a>
+
+                            <button class="btn btn-sm btn-outline-secondary me-2 edit-order-btn"
+                                data-bs-toggle="modal"
+                                data-bs-target="#editOrderModal"
+                                data-id="{{ $order->id }}"
+                                data-status="{{ $order->status }}">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                        </td>
                     </tr>
-                    <tr data-bs-toggle="modal" data-bs-target="#orderDetailModal" style="cursor: pointer;">
-                        <td>#ORD9002</td>
-                        <td class="fw-medium">Mike Johnson</td>
-                        <td>2025-10-09</td>
-                        <td>$45.00</td>
-                        <td><span class="badge bg-warning text-dark p-2">Processing</span></td>
-                        <td><i class="bi bi-eye text-muted"></i></td>
-                    </tr>
-                    <tr data-bs-toggle="modal" data-bs-target="#orderDetailModal" style="cursor: pointer;">
-                        <td>#ORD9003</td>
-                        <td class="fw-medium">Sarah Lee</td>
-                        <td>2025-10-08</td>
-                        <td>$350.99</td>
-                        <td><span class="badge bg-info text-dark p-2">Shipped</span></td>
-                        <td><i class="bi bi-eye text-muted"></i></td>
-                    </tr>
-                    <tr data-bs-toggle="modal" data-bs-target="#orderDetailModal" style="cursor: pointer;">
-                        <td>#ORD9004</td>
-                        <td class="fw-medium">David Kim</td>
-                        <td>2025-10-08</td>
-                        <td>$15.00</td>
-                        <td><span class="badge bg-danger p-2">Cancelled</span></td>
-                        <td><i class="bi bi-eye text-muted"></i></td>
-                    </tr>
-                    </tbody>
+                    @endforeach
+                </tbody>
             </table>
         </div>
-        
     </div>
 
-    <div class="modal fade" id="orderDetailModal" tabindex="-1" aria-labelledby="orderDetailLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-scrollable modal-dialog-centered">
-            <div class="modal-content custom-modal-content p-3">
-                <div class="modal-header border-0 pb-0">
-                    <h4 class="modal-title fw-bold" id="orderDetailLabel">Order #ORD9001 Details</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                
-                <div class="modal-body pt-2">
-                    
-                    <div class="d-flex justify-content-between align-items-center mb-4 p-3 bg-light rounded">
-                        <div>
-                            <span class="text-muted me-2 fw-medium">Status:</span>
-                            <span class="badge bg-success fs-6 p-2">Delivered</span>
-                        </div>
-                        <div>
-                            <button class="btn btn-outline-dark btn-sm me-2"><i class="bi bi-printer me-1"></i> Print Invoice</button>
-                            <button class="btn btn-dark btn-sm"><i class="bi bi-send me-1"></i> Update Status</button>
-                        </div>
-                    </div>
+    <div class="mt-3 text-center">
+        {{ $orders->links('pagination::bootstrap-5') }}
+    </div>
+    @endif
+</div>
 
-                    <div class="row g-4">
-                        <div class="col-md-6">
-                            <h6 class="fw-bold mb-3">Customer Information</h6>
-                            <p class="mb-1"><strong class="text-dark">Customer:</strong> Jane Doe</p>
-                            <p class="mb-1"><strong class="text-dark">Email:</strong> jane.doe@example.com</p>
-                            <p class="mb-1"><strong class="text-dark">Phone:</strong> +1 555-1234</p>
-                            <p class="mb-1"><strong class="text-dark">Shipping:</strong> 123 Main St, Apt 4B, Anytown, 10001</p>
-                        </div>
-
-                        <div class="col-md-6">
-                            <h6 class="fw-bold mb-3">Summary</h6>
-                            <p class="mb-1"><strong class="text-dark">Order Date:</strong> 2025-10-09</p>
-                            <p class="mb-1"><strong class="text-dark">Payment Method:</strong> Visa ending in 4242</p>
-                            <p class="mb-1"><strong class="text-dark">Shipping Method:</strong> Standard (3-5 days)</p>
-                            <p class="mb-1"><strong class="text-dark">Total Items:</strong> 2</p>
-                        </div>
-                    </div>
-
-                    <hr class="my-4">
-
-                    <h6 class="fw-bold mb-3">Items Ordered</h6>
-                    <ul class="list-group list-group-flush border rounded-2 mb-4">
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <div>
-                                <span class="fw-medium">Wireless Headphones</span> <span class="text-muted small">x 1</span>
-                            </div>
-                            <span class="fw-bold">$99.50</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <div>
-                                <span class="fw-medium">Fast Charger Cable</span> <span class="text-muted small">x 1</span>
-                            </div>
-                            <span class="fw-bold">$30.00</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-end pt-3">
-                            <div style="width: 250px;">
-                                <div class="d-flex justify-content-between text-muted small">
-                                    <span>Subtotal:</span>
-                                    <span>$129.50</span>
-                                </div>
-                                <div class="d-flex justify-content-between text-muted small">
-                                    <span>Shipping:</span>
-                                    <span>$0.00</span>
-                                </div>
-                                <div class="d-flex justify-content-between fw-bold fs-5 pt-1">
-                                    <span>Total:</span>
-                                    <span>$129.50</span>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-
-                </div>
-                
-                <div class="modal-footer border-0 pt-0">
-                    <button type="button" class="btn btn-light custom-cancel-btn" data-bs-dismiss="modal">Close</button>
-                </div>
+<!-- Edit Order Modal -->
+<div class="modal fade" id="editOrderModal" tabindex="-1" aria-labelledby="editOrderLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content custom-modal-content p-3">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-bold" id="editOrderLabel">Update Order Status</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
+            <form id="editOrderForm" method="POST">
+                @csrf
+                @method('PUT')
+                <div class="modal-body pt-2">
+                    <div class="mb-3">
+                        <label for="orderStatus" class="form-label fw-bold form-label-custom">Select Status</label>
+                        <select name="status" id="orderStatus" class="form-select custom-form-control" required>
+                            <option value="pending">Pending</option>
+                            <option value="ordered">Ordered</option>
+                            <option value="canceled">Canceled</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 pt-3">
+                    <button type="button" class="btn btn-light custom-cancel-btn me-2" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-dark custom-save-btn rounded-2">Update Status</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+@endsection
 
+@section('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const editModal = document.getElementById('editOrderModal');
+    if (editModal) {
+        editModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            const orderId = button.getAttribute('data-id');
+            const currentStatus = button.getAttribute('data-status');
+
+            const form = document.getElementById('editOrderForm');
+            form.action = `/admin/orders/${orderId}/update-status`;
+
+            // Set current status selected
+            document.getElementById('orderStatus').value = currentStatus;
+        });
+    }
+});
+</script>
+
+<style>
+
+.custom-form-control {
+  box-shadow: none !important;
+  border: 1px solid #ddd !important;
+  border-radius: 8px !important;
+  background-color: #fafafa !important;
+  transition: all 0.3s ease;
+}
+
+.custom-form-control:focus {
+  border-color: #333 !important;
+  background-color: #fff !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.form-label-custom {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.custom-modal-content {
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 12px !important;
+  background-color: #fff !important;
+}
+
+.custom-cancel-btn,
+.custom-save-btn {
+  box-shadow: none !important;
+  border-radius: 6px !important;
+}
+
+.custom-form-control:hover {
+  border-color: #999 !important;
+}
+
+::placeholder {
+  color: #aaa !important;
+  opacity: 0.9;
+}
+</style>
 @endsection

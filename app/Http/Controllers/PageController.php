@@ -15,7 +15,7 @@ class PageController extends Controller
 
     public function shop(Request $request)
     {
-        $categoryName = $request->query('category_id'); // e.g., ?category=Electronics
+        $categoryName = $request->query('category'); // e.g., ?category=Electronics
         $search = $request->query('search');         // search input
         $sort = $request->query('sort');             // sorting option
 
@@ -73,6 +73,4 @@ class PageController extends Controller
             ->get();
         return view('components.product-detail', compact('product', 'categories', 'relatedProducts'));
     }
-
-
 }

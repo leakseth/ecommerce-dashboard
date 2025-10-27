@@ -39,7 +39,7 @@
               </a>
             </li>
             <li class="nav-item mb-2">
-              <a href="{{ route('orders') }}" class="nav-link text-black {{ request()->is('admin/orders') ? 'active' : '' }}">
+              <a href="{{ route('orders.index') }}" class="nav-link text-black {{ request()->is('admin/orders') ? 'active' : '' }}">
                 <i class="bi bi-bag-heart  me-2"></i>Orders
               </a>
             </li>
@@ -71,7 +71,6 @@
               <span  class="logout-text">Logout</span>
           </button>
       </div>
- 
      <!-- Logout Confirmation Modal -->
     <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-md">
@@ -107,3 +106,15 @@
 
 </body>
 </html>
+
+<script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+<script src="{{ asset('js/app.js') }}"></script>
+<!-- <script>
+    Echo.private('orders.' + {{ auth()->id() ?? '0' }})
+        .listen('OrderStatusUpdated', (e) => {
+            alert(`Your order #${e.order_id} status changed to ${e.new_status}`);
+            // Update badge dynamically
+            let badge = document.querySelector(`#order-status-${e.order_id}`);
+            if(badge) badge.textContent = e.new_status;
+        });
+</script> -->

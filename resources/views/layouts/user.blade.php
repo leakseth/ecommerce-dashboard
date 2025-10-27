@@ -33,6 +33,17 @@
     /* Footer links */
     .footer-link { color: #6c757d; text-decoration: none; transition: color 0.3s ease; }
     .footer-link:hover { color: #000; }
+
+    .btn-outline-primary {
+      transition: all 0.3s ease;
+    }
+    .btn-outline-primary:hover {
+        background-color: #0d6efd;
+        color: #fff;
+        border-color: #0d6efd;
+        transform: translateY(-2px);
+    }
+
   </style>
 </head>
 <body>
@@ -56,12 +67,19 @@
 
       <!-- Icons & Login/Logout -->
       <div class="d-flex align-items-center gap-3">
+        @auth
+          <a href="{{ route('orders.history') }}" class="btn btn-outline-dark btn-sm d-flex align-items-center gap-1 px-3 py-1">
+              <i class="bi bi-clock-history"></i> History
+          </a>
+        @endauth
         <a href="{{ route('cart.index') }}" class="nav-link position-relative">
           <i data-lucide="shopping-cart" class="bi bi-cart2 p-1" style="font-size: 20px;"></i>
           <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
             {{ count(session('cart', [])) }}
           </span>
         </a>
+        
+
 
         <!-- Desktop Login/Logout -->
         @auth

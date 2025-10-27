@@ -66,7 +66,10 @@
             <h5 class="fw-bold">Total</h5>
             <h5 class="fw-bold text-primary">${{ number_format($total, 2) }}</h5>
           </div>
-          <button class="btn btn-dark w-100 rounded-pill py-2 mb-3">Proceed to Checkout</button>
+          <button class="btn btn-dark w-100 rounded-pill py-2 mb-3">
+            <a href="{{route('checkout.page')}}" class=" btn btn-dark w-100 rounded-pill">
+            Proceed to Checkout</a>
+          </button>
           <a href="{{ route('shop') }}" class="btn btn-outline-secondary w-100 rounded-pill">
             Continue Shopping
           </a>
@@ -153,8 +156,6 @@ document.addEventListener("DOMContentLoaded", () => {
 //         }
 //     });
 // });
-
-
 });
 
 document.addEventListener('DOMContentLoaded', () => {

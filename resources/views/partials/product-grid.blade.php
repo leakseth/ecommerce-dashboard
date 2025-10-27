@@ -20,7 +20,7 @@
         <div class="p-4 text-center">
           <h3 class="fw-semibold fs-5 mb-1 text-dark">{{ $product->name }}</h3>
           <p class="text-muted small mb-2">
-            {{ $product->category ?? 'Uncategorized' }}
+            {{ $product->category->name ?? 'Uncategorized' }}
           </p>
           <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
             <span class="fw-bold fs-5 text-primary">${{ number_format($product->price, 2) }}</span>
@@ -48,7 +48,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     const userLoggedIn = @json(auth()->check()); // true if logged in, false if guest
   // Handle Add to Cart buttons
-  document.querySelectorAll(".add-to-cart").forEach(button => {
+document.querySelectorAll(".add-to-cart").forEach(button => {
     button.addEventListener("click", async () => {
 
       if(!userLoggedIn){
@@ -81,22 +81,21 @@ document.addEventListener("DOMContentLoaded", () => {
         showAlert(data.success ? '🛒 ' + data.message : '❌ Something went wrong.', data.success ? 'success' : 'danger');
 
       if (data.success) {
-        // Update cart count without reload
         const countEl = document.getElementById("cart-count");
         if (countEl) {
-          let count = parseInt(countEl.textContent);
-          countEl.textContent = count + 1;
+          // Instead of always adding +1, fetch updated count from backend
+          const resCount = await fetch("{{ route('cart.count') }}");
+          const countData = await resCount.json();
+          countEl.textContent = countData.count; // ✅ exact total distinct products
         }
 
-        // Optional: success animation or toast
         button.innerHTML = '<i data-lucide="check"></i> Added';
         setTimeout(() => {
           button.innerHTML = '<i data-lucide="shopping-cart" class="me-1"></i> Add to Cart';
           lucide.createIcons();
         }, 1500);
-
-        lucide.createIcons();
       }
+
       // Alert helper
         function showAlert(message, type) {
             const alertBox = document.createElement('div');

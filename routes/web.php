@@ -10,6 +10,8 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SerttingController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\OrderController;
 
 // -------------------- FRONTEND ROUTES --------------------
 // Public pages (no login required)
@@ -26,8 +28,14 @@ Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('/cart/add', [CartController::class, 'add'])->middleware('auth')->name('cart.add');
 Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
 Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
-Route::get('/checkout', [CategoryController::class, 'checkoutPage'])->name('checkout.page');
-Route::post('/checkout/confirm', [CategoryController::class, 'checkoutConfirm'])->name('checkout.confirm');
+Route::get('/checkout', [CheckoutController::class, 'checkoutPage'])->name('checkout.page');
+Route::get('/checkout/confirm', [CheckoutController::class, 'checkoutConfirm']);
+Route::post('/checkout/confirm', [CheckoutController::class, 'checkoutConfirm'])->name('checkout.confirm');
+Route::get('/cart/count', [CartController::class, 'count'])->name('cart.count');
+
+// Order history
+Route::get('/orders/history', [OrderController::class, 'history'])->name('orders.history')->middleware('auth');
+Route::get('/orders/{id}', [OrderController::class, 'detail'])->name('orders.detail');
 
 // -------------------- AUTH ROUTES --------------------
 // Login / Register page for guests only
@@ -77,8 +85,11 @@ Route::middleware('role:1')->prefix('admin')->group(function () {
             Route::delete('/{id}', [UserController::class, 'destroy'])->name('delete');
         });
 
-        // Optional pages
-        Route::view('/orders', 'pages.orders')->name('orders');
+        Route::prefix('orders')->name('orders.')->group(function () {
+            Route::get('/', [OrderController::class, 'index'])->name('index');
+            Route::get('/{id}', [OrderController::class, 'show'])->name('show');
+            Route::put('/{id}/update-status', [OrderController::class, 'updateStatus'])->name('updateStatus');
+        });
         Route::view('/settings', 'pages.settings')->name('settings');
 });
 
@@ -87,4 +98,5 @@ Route::middleware(['auth', 'role:0'])->prefix('user')->group(function () {
     Route::get('/', function () {
         return view('pages.store');
     })->name('user.dashboard');
+    // Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
 });
