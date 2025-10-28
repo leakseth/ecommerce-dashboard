@@ -15,7 +15,7 @@
     <div class="row">
       <!-- Sidebar -->
       <div class="col-2 sidebar p-3 position-fixed">
-        <h4 class=" text-center border-bottom pb-4">Management</h4>
+        <h4 class=" text-center border-bottom pb-4">SR-TECHZONE</h4>
         <nav>
           <ul class="nav flex-column">
             <li class="nav-item mb-2">

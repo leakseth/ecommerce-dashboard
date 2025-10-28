@@ -51,10 +51,11 @@
   <header class="sticky-top bg-white border-bottom py-2">
     <div class="container d-flex align-items-center justify-content-between">
       <a href="{{ route('store') }}" class="d-flex align-items-center text-decoration-none">
-        <div class="bg-dark rounded d-flex align-items-center justify-content-center me-2" style="width:32px;height:32px;">
-          <span class="text-white fw-bold">S</span>
+        <div class=" rounded d-flex align-items-center justify-content-center" style="width:65px; height:65px;">
+          <img class="w-100 h-100 object-fit-cover" src="/image/image copy 2.png" alt="">
+          <!-- <span class="text-white fw-bold">S</span> -->
         </div>
-        <span class="fw-bold fs-4 text-dark">STORE</span>
+        <!-- <span class="fw-bold fs-4 text-dark">STORE</span> -->
       </a>
 
       <!-- Desktop Nav -->

@@ -9,7 +9,7 @@
     <div class="container">
         <h1 class="display-4 fw-bold mb-3 text-dark">Get in Touch</h1>
         <p class="lead text-muted mx-auto" style="max-width: 700px;">
-            Have a question or need assistance? We're here to help.
+            Have a question or need help? Send us a message below and we’ll get back to you soon.
         </p>
     </div>
 </section>
@@ -73,7 +73,20 @@
         <div class="col-lg-8">
             <div class="bg-white border rounded p-4 p-md-5 shadow-sm">
                 <h2 class="fw-bold mb-4 text-dark">Send us a Message</h2>
-                <form method="POST">
+               @if(session('success_admin'))
+                    <div class="alert alert-success">{{ session('success_admin') }}</div>
+                @endif
+
+                @if(session('success_user'))
+                    <div class="alert alert-info">{{ session('success_user') }}</div>
+                @endif
+
+                @if(session('error'))
+                    <div class="alert alert-danger">{{ session('error') }}</div>
+                @endif
+
+
+                <form action="{{ route('contact.send') }}" method="POST">
                     @csrf
                     <div class="row g-3 mb-3">
                         <div class="col-md-6">
