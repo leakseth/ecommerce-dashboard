@@ -16,7 +16,7 @@ class ContactController extends Controller
         return view('components.contact');
     }
 
-    public function send(Request $request)
+   public function send(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:100',
@@ -49,7 +49,7 @@ class ContactController extends Controller
 
             // Send auto-reply email to user
             Mail::to($request->email)->send(new ContactAutoReply($request->name));
-            session()->flash('success_user', 'You have received an auto-reply email.');
+            // session()->flash('success_user', 'You have received an auto-reply email.');
 
             return back();
         } catch (\Exception $e) {
@@ -58,7 +58,5 @@ class ContactController extends Controller
         }
 
     }
-
-
 
 }

@@ -39,8 +39,12 @@ Route::get('/orders/history', [OrderController::class, 'history'])->name('orders
 Route::get('/orders/{id}', [OrderController::class, 'detail'])->name('orders.detail');
 
 // For user contact
+Route::get('/contact', function() {
+    return view('contact');
+})->name('contact.page');
+
 Route::get('/contact', [ContactController::class, 'show'])->name('contact');
-Route::post('/contact', [ContactController::class, 'send'])->name('contact.send');
+Route::post('/contact/send', [ContactController::class, 'send'])->name('contact.send');
 
 // -------------------- AUTH ROUTES --------------------
 // Login / Register page for guests only

@@ -6,16 +6,16 @@
       $status = $stock > 10 ? 'In Stock' : ($stock > 0 ? 'Low Stock' : 'Out of Stock');
     @endphp
 
-    <div class="col-lg-3 col-md-6 col-sm-6">
-      <div class=" card product-card border-0 shadow-sm h-100 position-relative overflow-hidden">
-        <div class="bg-light position-relative" style=" height:250px;">
-              <img src="{{ asset('storage/' . $product->image) }}"
-                   alt="{{ $product->name }}"
-                   class="card-img-top img-fluid object-fit-cover w-100 h-100 product-img">
-              <span class="position-absolute top-0 end-0 m-2 badge {{ $badgeClass }}">
-                {{ $status }}
-              </span>
-            </div>
+    <div class="col-lg-3 col-md-6 col-sm-6" >
+      <div class=" card product-card border-0 shadow-sm h-100 position-relative overflow-hidden" data-aos="zoom-in" data-aos-delay="{{ $loop->index * 100 }}">
+        <div class="bg-light position-relative" style=" height:250px;" >
+          <img src="{{ asset('storage/' . $product->image) }}"
+                alt="{{ $product->name }}"
+                class="card-img-top img-fluid object-fit-cover w-100 h-100 product-img">
+          <span class="position-absolute top-0 end-0 m-2 badge {{ $badgeClass }}">
+            {{ $status }}
+          </span>
+        </div>
 
         <div class="p-4 text-center">
           <h3 class="fw-semibold fs-5 mb-1 text-dark">{{ $product->name }}</h3>

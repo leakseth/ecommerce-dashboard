@@ -6,7 +6,7 @@
 <!-- ===== PAGE HEADER ===== -->
 <section class="bg-light border-bottom py-5">
   <div class="container text-center text-md-start">
-    <h1 class="fw-bold display-5 text-dark mb-3 text-center">Shop All Products</h1>
+    <h1 class="fw-bold display-5 text-dark mb-3 text-center" >Shop All Products</h1>
     <p class="fs-5 text-secondary mb-0 text-center">Browse our complete collection of premium electronics and accessories.</p>
   </div>
 </section>
@@ -14,7 +14,7 @@
 <!-- ===== MAIN CONTENT ===== -->
 <main class="container py-5">
  <!-- Filters -->
-<div class="mb-5">
+<div class="mb-5" >
   <form id="searchForm" method="GET" action="{{ route('shop') }}" class="d-flex flex-column flex-sm-row gap-3 mb-3">
     <div class="position-relative flex-grow-1" style="max-width: 400px;">
       <i data-lucide="search" class=" bi bi-search position-absolute top-50 translate-middle-y start-0 ms-3 text-muted" style="width: 20px; height: 23px;"></i>
@@ -29,7 +29,7 @@
     </div>
   </form>
 
-  <div class="d-flex flex-wrap justify-content-between align-items-center">
+  <div class="d-flex flex-wrap justify-content-between align-items-center" >
     <div class="d-flex flex-wrap gap-2">
       <a href="{{ route('shop') }}" class="btn btn-sm rounded-pill px-3 {{ !request('category') ? 'btn-dark' : 'btn-outline-dark' }}">All</a>
       @foreach ($categories as $category)
@@ -37,7 +37,6 @@
           class="btn btn-sm rounded-pill px-3 {{ request('category') == $category->id ? 'btn-dark' : 'btn-outline-dark' }}">
           {{ $category->name }}
         </a>
-
       @endforeach
     </div>
 
@@ -60,7 +59,7 @@
 
 
   <!-- ===== PRODUCTS GRID ===== -->
-  <div id="productGrid" class="row g-4">
+  <div id="productGrid" class="row g-4"  data-aos="fade-up" data-aos-delay="300">
     @include('partials.product-grid', ['products' => $products])
   </div>
 

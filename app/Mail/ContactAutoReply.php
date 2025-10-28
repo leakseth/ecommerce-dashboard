@@ -19,7 +19,8 @@ class ContactAutoReply extends Mailable
 
     public function build()
     {
-        return $this->subject('We Received Your Message')
-                   ->view('emails.contact-autoreply');
+        return $this->subject('Thank you for contacting us!')
+                    ->view('emails.contact-autoreply')
+                    ->with('name', $this->name);
     }
 }

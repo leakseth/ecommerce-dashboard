@@ -6,7 +6,7 @@
 
 <!-- Hero Section -->
 <section class="bg-light py-5 border-bottom">
-    <div class="container text-center">
+    <div class="container text-center" data-aos="fade-down">
         <h1 class="display-4 fw-bold mb-3">About STORE</h1>
         <p class="lead text-muted mx-auto" style="max-width: 700px;">
             We're passionate about bringing you the best electronics and accessories to enhance your digital lifestyle.
@@ -20,7 +20,7 @@
     <!-- Our Story -->
     <section class="mb-5">
         <div class="row align-items-center gy-4">
-            <div class="col-lg-6">
+            <div class="col-lg-6" data-aos="fade-right">
                 <h2 class="fw-bold mb-3">Our Story</h2>
                 <p class="text-muted mb-2">
                     Founded in 2020, STORE began with a simple mission: to make premium technology accessible to everyone.
@@ -33,36 +33,36 @@
                     Today, we serve thousands of customers worldwide, helping them find the perfect tech solutions for their needs.
                 </p>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-6" data-aos="fade-left">
                 <div class="ratio ratio-16x9 rounded overflow-hidden shadow-sm">
-                    <img src="{{ asset('images/modern-office.png') }}" alt="Our workspace" class="img-fluid object-fit-cover">
+                    <img src="/image/image copy 3.png" alt="Our workspace" class="img-fluid object-fit-cover">
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Stats Section -->
-    <section class="mb-5 text-center">
+    <section class="mb-5 text-center" data-aos="zoom-in-up">
         <div class="row g-4">
-            <div class="col-6 col-md-3">
+            <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="100">
                 <div class="card border-0 shadow-sm py-4">
                     <div class="fs-3 fw-bold text-primary mb-1">50K+</div>
                     <p class="mb-0 text-muted small">Happy Customers</p>
                 </div>
             </div>
-            <div class="col-6 col-md-3">
+            <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="200">
                 <div class="card border-0 shadow-sm py-4">
                     <div class="fs-3 fw-bold text-primary mb-1">500+</div>
                     <p class="mb-0 text-muted small">Products</p>
                 </div>
             </div>
-            <div class="col-6 col-md-3">
+            <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="300">
                 <div class="card border-0 shadow-sm py-4">
                     <div class="fs-3 fw-bold text-primary mb-1">4.8/5</div>
                     <p class="mb-0 text-muted small">Average Rating</p>
                 </div>
             </div>
-            <div class="col-6 col-md-3">
+            <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="400">
                 <div class="card border-0 shadow-sm py-4">
                     <div class="fs-3 fw-bold text-primary mb-1">5 Years</div>
                     <p class="mb-0 text-muted small">In Business</p>
@@ -73,25 +73,25 @@
 
     <!-- Values Section -->
     <section class="mb-5">
-        <div class="text-center mb-4">
+        <div class="text-center mb-4" data-aos="fade-up">
             <h2 class="fw-bold mb-2">Our Values</h2>
             <p class="text-muted mx-auto" style="max-width: 700px;">These core principles guide everything we do and shape our relationships with customers and partners.</p>
         </div>
         <div class="row g-4">
-            <div class="col-md-4">
-                <div class="card border-0 shadow-sm h-100 p-4">
+            <div class="col-md-4" data-aos="zoom-in" data-aos-delay="100">
+                <div class="card border-0 shadow-sm h-100 p-4 hover-lift">
                     <h4 class="fw-bold mb-2">Quality First</h4>
                     <p class="text-muted mb-0">We never compromise on quality. Every product is carefully selected and tested to ensure it meets our high standards.</p>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="card border-0 shadow-sm h-100 p-4">
+            <div class="col-md-4" data-aos="zoom-in" data-aos-delay="200">
+                <div class="card border-0 shadow-sm h-100 p-4 hover-lift">
                     <h4 class="fw-bold mb-2">Customer Focus</h4>
                     <p class="text-muted mb-0">Your satisfaction is our priority. We're here to help you find the perfect products and provide excellent support.</p>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="card border-0 shadow-sm h-100 p-4">
+            <div class="col-md-4" data-aos="zoom-in" data-aos-delay="300">
+                <div class="card border-0 shadow-sm h-100 p-4 hover-lift">
                     <h4 class="fw-bold mb-2">Innovation</h4>
                     <p class="text-muted mb-0">We stay ahead of tech trends to bring you the latest and most innovative products on the market.</p>
                 </div>
@@ -100,7 +100,7 @@
     </section>
 
     <!-- Call to Action -->
-    <section class="text-center bg-light rounded p-5">
+    <section class="text-center bg-light rounded p-5" data-aos="fade-up">
         <h2 class="fw-bold mb-3">Ready to Shop?</h2>
         <p class="text-muted mb-4 mx-auto" style="max-width: 600px;">
             Explore our curated collection of premium electronics and accessories.
@@ -109,5 +109,43 @@
     </section>
 
 </main>
+
+<style>
+    /* Hover lift effect for cards */
+.hover-lift {
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Image soft zoom on hover */
+img.object-fit-cover {
+  transition: transform 0.5s ease;
+}
+
+img.object-fit-cover:hover {
+  transform: scale(1.05);
+}
+
+/* Subtle fade animation when page loads */
+body {
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Button animation */
+.btn:hover {
+  transform: translateY(-2px);
+  transition: transform 0.3s ease;
+}
+
+</style>
 
 @endsection

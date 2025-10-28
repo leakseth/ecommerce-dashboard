@@ -6,7 +6,7 @@
 
 <!-- Hero Section -->
 <section class="bg-light py-5 border-bottom text-center">
-    <div class="container">
+    <div class="container" data-aos="fade-down">
         <h1 class="display-4 fw-bold mb-3 text-dark">Get in Touch</h1>
         <p class="lead text-muted mx-auto" style="max-width: 700px;">
             Have a question or need help? Send us a message below and we’ll get back to you soon.
@@ -19,7 +19,7 @@
     <div class="row g-4">
 
         <!-- Contact Information -->
-        <div class="col-lg-4">
+        <div class="col-lg-4" data-aos="fade-right" data-aos-delay="100">
             <h2 class="fw-bold mb-4 text-dark">Contact Information</h2>
 
             <div class="d-flex gap-3 mb-4 align-items-start">
@@ -28,7 +28,7 @@
                 </div>
                 <div>
                     <h6 class="fw-semibold mb-1 text-dark">Email</h6>
-                    <p class="mb-0 text-muted">support@store.com</p>
+                    <p class="mb-0 text-muted">kvirekrith@gmail.com</p>
                 </div>
             </div>
 
@@ -38,7 +38,7 @@
                 </div>
                 <div>
                     <h6 class="fw-semibold mb-1 text-dark">Phone</h6>
-                    <p class="mb-0 text-muted">+1 (555) 123-4567</p>
+                    <p class="mb-0 text-muted">+885 882 202 719</p>
                 </div>
             </div>
 
@@ -48,7 +48,7 @@
                 </div>
                 <div>
                     <h6 class="fw-semibold mb-1 text-dark">Address</h6>
-                    <p class="mb-0 text-muted">123 Tech Street, San Francisco, CA 94102</p>
+                    <p class="mb-0 text-muted">Sangkat Tek Thla, Khan Sen Sok, Phnom Penh</p>
                 </div>
             </div>
 
@@ -70,7 +70,7 @@
         </div>
 
         <!-- Contact Form -->
-        <div class="col-lg-8">
+        <div class="col-lg-8" data-aos="fade-left" data-aos-delay="100">
             <div class="bg-white border rounded p-4 p-md-5 shadow-sm">
                 <h2 class="fw-bold mb-4 text-dark">Send us a Message</h2>
                @if(session('success_admin'))
@@ -86,7 +86,7 @@
                 @endif
 
 
-                <form action="{{ route('contact.send') }}" method="POST">
+                <form id="contactForm" action="{{ route('contact.send') }}" method="POST" data-aos="zoom-in" data-aos-delay="200">
                     @csrf
                     <div class="row g-3 mb-3">
                         <div class="col-md-6">
@@ -167,3 +167,33 @@ textarea:disabled {
 }
 
 </style>
+
+@section('scripts')
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+$('#contactForm').submit(function(e){
+    e.preventDefault(); // stop normal form submission
+
+    $.ajax({
+        url: "{{ route('contact.send') }}", // make sure your route name is correct
+        type: "POST",
+        data: $(this).serialize(),
+        success: function(res){
+            if(res.success){
+                Swal.fire('Success!', res.message, 'success');
+                $('#contactForm')[0].reset();
+            } else {
+                Swal.fire('Oops!', res.message, 'error');
+            }
+        },
+        error: function(xhr){
+            Swal.fire('Error!', 'Something went wrong. Please try again later.', 'error');
+        }
+    });
+});
+</script>
+
+
+@endsection

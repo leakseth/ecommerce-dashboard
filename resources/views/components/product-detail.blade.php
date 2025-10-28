@@ -69,9 +69,9 @@
             <i data-lucide="shopping-cart" class="me-2"></i> Add to Cart
           </button>
 
-          <button action="{{ route('shop') }}" class="btn btn-outline-secondary px-4 py-2">
+          <a href="{{ route('shop') }}" class="btn btn-outline-secondary px-4 py-2">
             <i class="bi bi-arrow-left"></i> Back to Shop
-          </button>
+          </a>
         </div>
         
       </div>

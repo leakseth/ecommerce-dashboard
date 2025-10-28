@@ -76,7 +76,7 @@
                             data-bs-target="#editProductModal"
                             data-id="{{ $product->id }}"
                             data-name="{{ $product->name }}"
-                            data-category="{{ $product->category }}"
+                            data-category="{{ $product->category_id }}"
                             data-price="{{ $product->price }}"
                             data-stock="{{ $product->stock }}"
                             data-status="{{ $product->status }}"
@@ -215,10 +215,12 @@
 
                         <div class="col-md-6">
                             <label class="form-label fw-bold form-label-custom">Category</label>
-                            <select name="category_id" class="form-select custom-form-control" id="editProductCategory" required>
+                            <select name="category" class="form-select custom-form-control" id="editProductCategory" required>
                                 @isset($categories)
                                     @foreach ($categories as $category)
-                                        <option value="{{$category->id}}">{{$category->name}}</option>
+                                         <option value="{{ $category->id }}" >
+                                            {{ $category->name }}
+                                        </option>
                                     @endforeach
                                 @endisset
                             </select>
