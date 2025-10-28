@@ -215,7 +215,7 @@
 
                         <div class="col-md-6">
                             <label class="form-label fw-bold form-label-custom">Category</label>
-                            <select name="category" class="form-select custom-form-control" id="editProductCategory" required>
+                            <select name="category_id" class="form-select custom-form-control" id="editProductCategory" required>
                                 @isset($categories)
                                     @foreach ($categories as $category)
                                          <option value="{{ $category->id }}" >
@@ -264,7 +264,7 @@
                 <h5 class="modal-title" id="deleteProductLabel">Delete Product</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            @foreach ($products as $product)
+            
                 <form action="{{ url('admin/products/'.$product->id) }}" id="deleteProductForm" method="POST">
                     @csrf
                     @method('DELETE')
@@ -272,14 +272,15 @@
                         <p>Are you sure you want to delete 
                             <strong id="deleteProductNameText">
                                 {{$product->name}}
-                            </strong>? This action cannot be undone.</p>
+                            </strong>
+                            ? This action cannot be undone.</p>
                     </div>
                     <div class="modal-footer border-0">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                         <button type="submit" class="btn btn-danger">Delete</button>
                     </div>
                 </form>
-            @endforeach
+            
             
         </div>
     </div>
