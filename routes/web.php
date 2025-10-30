@@ -92,6 +92,7 @@ Route::middleware('role:1')->prefix('admin')->group(function () {
             Route::get('/{id}/edit', [UserController::class, 'edit'])->name('edit');
             Route::put('/{id}', [UserController::class, 'update'])->name('update');
             Route::delete('/{id}', [UserController::class, 'destroy'])->name('delete');
+            
         });
 
         Route::prefix('orders')->name('orders.')->group(function () {

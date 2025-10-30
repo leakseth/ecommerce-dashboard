@@ -89,30 +89,38 @@
           $status = $stock > 10 ? 'In Stock' : ($stock > 0 ? 'Low Stock' : 'Out of Stock');
         @endphp
 
-        <div class="col-lg-3 col-md-4 col-sm-6">
-          <div class="card border-0 shadow-sm h-100 position-relative overflow-hidden align-items-center">
-            <img src="{{ asset('storage/' . $related->image) }}"
-                 alt="{{ $related->name }}"
-                 class="card-img-top img-fluid"
-                 style="object-fit: cover; height: 230px;">
-            <span class="position-absolute top-0 end-0 m-2 badge {{ $badgeClass }}">
-              {{ $status }}
-            </span>
+        <div class="col-lg-3 col-md-6 col-sm-6" >
+          <div class=" card product-card border-0 shadow-sm h-100 position-relative overflow-hidden" data-aos="zoom-in" data-aos-delay="{{ $loop->index * 100 }}">
+            <div class="bg-light position-relative" style=" height:250px;" >
+              <img src="{{ asset('storage/' . $related->image) }}"
+                    alt="{{ $product->name }}"
+                    class="card-img-top img-fluid object-fit-cover w-100 h-100 product-img">
+              <span class="position-absolute top-0 end-0 m-2 badge {{ $badgeClass }}">
+                {{ $status }}
+              </span>
+            </div>
 
-            <div class="card-body text-center p-3">
-              <h6 class="fw-semibold mb-1 text-dark text-truncate">{{ $related->category->name }}</h6>
-              <span class="fw-bold text-primary">${{ number_format($related->price, 2) }}</span>
+            <div class="p-4 text-center">
+              <h3 class="fw-semibold fs-5 mb-1 text-dark">{{ $related->name }}</h3>
+              <p class="text-muted small mb-2">
+                {{ $related->category->name ?? 'Uncategorized' }}
+              </p>
+              <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
+                <span class="fw-bold fs-5 text-primary">${{ number_format($related->price, 2) }}</span>
+              </div>
+
               <div class="mt-3 d-flex flex-column gap-2 w-full">
                 <a href="{{ route('product.detail', $related->id) }}" 
                    class="btn btn-outline-dark btn-sm w-100">View Details</a>
-                <button class="btn btn-dark btn-sm w-100 add-to-cart"
-                        data-id="{{ $related->id }}"
-                        data-name="{{ $related->name }}"
-                        data-price="{{ $related->price }}"
-                        data-image="{{ asset('storage/' . $related->image) }}">
-                  <i data-lucide="shopping-cart" class="me-1"></i> Add to Cart
+                <button class="btn btn-dark w-100 add-to-cart"
+                    data-id="{{ $product->id }}"
+                    data-name="{{ $product->name }}"
+                    data-price="{{ $product->price }}"
+                    data-image="{{ asset('storage/' . $product->image) }}">
+                    <i data-lucide="shopping-cart" class="me-1"></i> Add to Cart
                 </button>
               </div>
+              
             </div>
           </div>
         </div>

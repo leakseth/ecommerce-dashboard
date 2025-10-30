@@ -69,7 +69,7 @@ class PageController extends Controller
         $categories = Category::all(); // optional, if you want to show sidebar or menu
         $relatedProducts = Product::where('category_id', $product->category_id)
             ->where('id', '!=', $product->id)
-            ->limit(4)
+            ->limit(8)
             ->get();
         return view('components.product-detail', compact('product', 'categories', 'relatedProducts'));
     }

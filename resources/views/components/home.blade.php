@@ -44,12 +44,21 @@
 
     <div class="row g-4 justify-content-start">
         @foreach ($products as $product)
+        @php
+          $stock = $product->stock;
+          $badgeClass = $stock > 10 ? 'bg-success' : ($stock > 0 ? 'bg-warning text-dark' : 'bg-danger');
+          $status = $stock > 10 ? 'In Stock' : ($stock > 0 ? 'Low Stock' : 'Out of Stock');
+        @endphp
             <div class="col-lg-3 col-md-6 col-sm-6" data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
                 <div class="card border-0 shadow-sm h-100 product-card position-relative overflow-hidden">
-                    <img src="{{ asset('storage/' . $product->image) }}"
-                         class="card-img-top img-fluid"
-                         alt="{{ $product->name }}"
-                         style="object-fit: cover; height: 250px;">
+                    <div class="bg-light position-relative" style=" height:250px;" >
+                        <img src="{{ asset('storage/' . $product->image) }}"
+                                alt="{{ $product->name }}"
+                                class="card-img-top img-fluid object-fit-cover w-100 h-100 product-img">
+                        <span class="position-absolute top-0 end-0 m-2 badge {{ $badgeClass }}">
+                            {{ $status }}
+                        </span>
+                    </div>
                     <div class="card-body text-center p-3">
                         <h5 class="fw-semibold mb-1 text-dark">{{ $product->name }}</h5>
                         <p class="text-muted small mb-2">{{ $product->category->name ?? 'Uncategorized' }}</p>
