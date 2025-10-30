@@ -53,7 +53,7 @@
                  min="1" value="1" style="max-width: 100px;"> -->
                 <div class="input-group input-group-sm justify-content-end" style="width: 110px;">
                   <button class="btn btn-outline-secondary btn-sm minus-btn" data-id="{{ $product->id }}">-</button>
-                  <input type="number" id="quantity" class="form-control text-center update-qty"
+                  <input type="number" class="form-control text-center update-qty"
                          value="1" min="1"
                          data-id="{{ $product->id }}">
                   <button class="btn btn-outline-secondary btn-sm plus-btn" data-id="{{ $product->id }}">+</button>
@@ -122,9 +122,6 @@
 @endif
 </div>
 
-
-
-
 @endsection
 
 @push('scripts')
@@ -157,7 +154,7 @@ document.addEventListener("DOMContentLoaded", () => {
       updateCart(input.dataset.id, input.value);
     });
   });
-
+    
  const addBtn = document.querySelector(".add-to-cart");
 
   addBtn.addEventListener("click", async () => {
@@ -167,10 +164,10 @@ document.addEventListener("DOMContentLoaded", () => {
       if (modalEl) new bootstrap.Modal(modalEl).show();
       return;
     }
-
-    const qtyInput = document.getElementById("quantity");
+// 
+    const qtyInput = document.querySelector(`.update-qty[data-id="${addBtn.dataset.id}"]`);
     const qty = qtyInput ? parseInt(qtyInput.value) : 1;
-
+// 
     const productData = {
       id: addBtn.dataset.id,
       name: addBtn.dataset.name,
